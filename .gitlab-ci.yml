@@ -25,8 +25,8 @@ package:dev:
     - shell
   script:
     - docker login ${DOCKER_REPO} -u ${DOCKER_REPO_USER} -p ${DOCKER_REPO_PASS}
-    - docker build --pull --build-arg DOCKER_REPO=$DOCKER_REPO -t ${DOCKER_REPO}/apps/api-template:dev-build-$CI_PIPELINE_IID .
-    - docker push ${DOCKER_REPO}/apps/api-template:dev-build-$CI_PIPELINE_IID
+    - docker build --pull --build-arg DOCKER_REPO=$DOCKER_REPO -t ${DOCKER_REPO}/apps/api_template:dev-build-$CI_PIPELINE_IID .
+    - docker push ${DOCKER_REPO}/apps/api_template:dev-build-$CI_PIPELINE_IID
   except:
     - production
 
@@ -36,7 +36,7 @@ package:prod:
     - shell
   script:
     - docker login ${DOCKER_REPO} -u ${DOCKER_REPO_USER} -p ${DOCKER_REPO_PASS}
-    - docker build --pull --build-arg DOCKER_REPO=$DOCKER_REPO -t ${DOCKER_REPO}/apps/api-template:build-$CI_PIPELINE_IID .
-    - docker push ${DOCKER_REPO}/apps/api-template:build-$CI_PIPELINE_IID
+    - docker build --pull --build-arg DOCKER_REPO=$DOCKER_REPO -t ${DOCKER_REPO}/apps/api_template:build-$CI_PIPELINE_IID .
+    - docker push ${DOCKER_REPO}/apps/api_template:build-$CI_PIPELINE_IID
   only:
     - production
