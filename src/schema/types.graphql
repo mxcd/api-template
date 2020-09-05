@@ -1,0 +1,25 @@
+scalar DateTime
+
+type Member {
+    id: Int!
+    firstName: String!
+    lastName: String!
+    username: String!
+    email: String!
+    groups: [Group!]!
+    createdBy: String!
+    createdDate: DateTime!
+    modifiedBy: String!
+    modifiedDate: DateTime!
+}
+
+type Group {
+    id: Int!
+    name: String!
+    displayName: String!
+    members: [Member!]!
+    createdBy: String!
+    createdDate: DateTime!
+    modifiedBy: String!
+    modifiedDate: DateTime!
+}

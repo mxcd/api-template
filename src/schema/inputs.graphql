@@ -1,0 +1,12 @@
+input CreateMemberInput {
+    firstName: String!
+    lastName: String!
+    username: String!
+    email: String!
+    groups: [String!]
+}
+
+input AddGroupInput {
+    name: String!
+    displayName: String!
+}
