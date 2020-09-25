@@ -1,8 +1,9 @@
 import * as winston from "winston";
-import { AuthenticationError } from "apollo-server-errors";
+import { AuthenticationError } from "apollo-server-errors/dist";
 const axios = require("axios")
 const qs = require('querystring')
-import {PrismaClient} from '@prisma/client'
+import {PrismaClient} from "@prisma/client";
+
 require('dotenv').config()
 
 export const prisma = new PrismaClient();
@@ -34,7 +35,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export const contextBuilder = async ({ req }) => {
-    if(env.USE_AUTH) {
+    if(env.USE_AUTH === "true") {
         const authHeader: string = req.headers["authorization"];
         if (!authHeader) {
             log.debug(`No authorization header provided`)
@@ -89,4 +90,25 @@ const token_introspection = async (token) => {
     catch (err) {
         log.error(err)
     }
+}
+
+export function listEmpty(obj): boolean {
+    return !(typeof(obj) === 'object' && obj.length !== 0);
+}
+
+export function removeNull(obj: object): object {
+    let foo = {};
+    for(let key in obj) {
+        if(obj[key] !== null) {
+            foo[key] = obj[key];
+        }
+    }
+    return foo
+}
+
+export function removeId(obj: object): object {
+    if("id" in obj) {
+        delete obj["id"];
+    }
+    return obj;
 }

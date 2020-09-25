@@ -4,6 +4,7 @@
   "description": "Prisma + GraphQL template for rapid API development",
   "main": "index.js",
   "scripts": {
+    "codegen": "npx prisma generate && graphql-codegen --config gqlCodegen.yml",
     "watch": "tsc -w --copy-files",
     "dev": "nodemon ./dist/index.js",
     "ts-node-dev": "ts-node-dev ./src/index.ts",
@@ -27,6 +28,10 @@
   },
   "homepage": "https://github.com/mxcd/api-template#readme",
   "devDependencies": {
+    "@graphql-codegen/cli": "1.17.8",
+    "@graphql-codegen/introspection": "1.17.8",
+    "@graphql-codegen/typescript": "1.17.8",
+    "@graphql-codegen/typescript-resolvers": "^1.17.9",
     "@types/compression": "^1.7.0",
     "@types/express": "^4.17.7",
     "@types/graphql": "^14.5.0",
