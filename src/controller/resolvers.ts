@@ -19,6 +19,9 @@ const resolvers: IResolvers = {
         }
     },
     Member: {
+        __resolveReference(member, {fetchMemberById}) {
+            return fetchMemberById(member.id)
+        },
         groups(parent, args, context, info) {
             return getGroupsForMember(parent, args, context, info);
         }

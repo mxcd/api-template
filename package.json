@@ -48,6 +48,7 @@
     "typescript": "^4.0.2"
   },
   "dependencies": {
+    "@apollo/federation": "^0.20.4",
     "@prisma/cli": "^2.6.0",
     "@prisma/client": "^2.6.0",
     "apollo-server-errors": "^2.4.2",

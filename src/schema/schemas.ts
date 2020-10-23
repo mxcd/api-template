@@ -1,32 +1,17 @@
 import 'graphql-import-node';
-const schemas = require('./types.graphql');
-const operation = require('./operation.graphql');
-const inputs = require('./inputs.graphql');
-import { makeExecutableSchema } from 'graphql-tools';
 import resolvers from '../controller/resolvers';
-import { GraphQLSchema } from 'graphql';
-// import {GraphQLDateTime} from "graphql-iso-date"
+import {buildFederatedSchema} from "@apollo/federation";
+import * as fs from "fs";
+const { mergeTypeDefs } = require('@graphql-tools/merge');
+import { gql } from 'apollo-server-express';
+import path from "path";
 
-const schema: GraphQLSchema = makeExecutableSchema({
-    typeDefs: [operation, schemas, inputs],
-    resolvers
-});
+const types = gql(fs.readFileSync(path.join(__dirname, 'types.graphql'), 'utf8'))
+const inputs = gql(fs.readFileSync(path.join(__dirname, 'inputs.graphql'), 'utf8'))
+const operations = gql(fs.readFileSync(path.join(__dirname, 'operation.graphql'), 'utf8'))
+
+let typeDefs = mergeTypeDefs([types, inputs, operations]);
+
+//@ts-ignore
+const schema = buildFederatedSchema([{ typeDefs, resolvers }]);
 export default schema;
-
-// Reference for combining schemas into one typeDef
-// https://www.apollographql.com/blog/modularizing-your-graphql-schema-code-d7f71d5ed5f2/
-/*
-// schema.js
-import { typeDef as Author } from './author.js';
-import { typeDef as Book } from './book.js';
-const Query = `
-  type Query {
-    author(id: Int!): Post
-    book(id: Int!): Post
-  }
-`;
-makeExecutableSchema({
-    typeDefs: [ Query, Author, Book ],
-    resolvers: {},
-});
-*/

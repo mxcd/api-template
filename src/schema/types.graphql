@@ -1,6 +1,6 @@
 scalar DateTime
 
-type Member {
+type Member @key(fields: "id") {
     id: Int!
     firstName: String!
     lastName: String!
@@ -13,7 +13,7 @@ type Member {
     modifiedDate: DateTime!
 }
 
-type Group {
+type Group @key(fields: "id") {
     id: Int!
     name: String!
     displayName: String!
