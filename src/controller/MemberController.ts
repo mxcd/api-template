@@ -7,11 +7,11 @@ export async function getMembers(parent, args, context, info) {
 }
 
 export async function getMember(parent, args, context, info) {
-    return await prisma.member.findOne({where: {id: args.id}});
+    return await prisma.member.findUnique({where: {id: args.id}});
 }
 
 export async function getGroupsForMember(parent, args, context, info) {
-    return await prisma.member.findOne({where: {id: parent.id}}).groups();
+    return await prisma.member.findUnique({where: {id: parent.id}}).groups();
 }
 
 export async function addMember(parent, args, context, info) {

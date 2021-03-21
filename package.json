@@ -8,7 +8,7 @@
     "watch": "tsc -w --copy-files",
     "dev": "nodemon ./dist/index.js",
     "ts-node-dev": "ts-node-dev ./src/index.ts",
-    "build": "tsc && copyfiles -f ./src/schema/*.graphql ./dist/schema/ && copyfiles -f ./prisma/* ./dist/prisma/ && copyfiles package.json yarn.lock .env ./dist && cd dist && yarn install --prod && npx prisma generate",
+    "build": "tsc && copyfiles -f ./src/schema/*.graphql ./dist/schema/ && copyfiles -f ./prisma/* ./dist/prisma/ && copyfiles package.json package-lock.json .env ./dist && cd dist && npm install --only=prod && npx prisma generate",
     "prod": "node ./dist/index.js"
   },
   "repository": {
@@ -34,12 +34,10 @@
     "@graphql-codegen/typescript-resolvers": "^1.19.0",
     "@types/compression": "^1.7.0",
     "@types/express": "^4.17.11",
-    "@types/graphql": "^14.5.0",
     "@types/graphql-depth-limit": "^1.1.2",
     "@types/node": "^14.14.35",
     "copyfiles": "^2.4.1",
     "graphql-depth-limit": "^1.1.0",
-    "graphql-import": "^1.0.2",
     "nodemon": "^2.0.7",
     "ts-loader": "^8.0.18",
     "ts-node": "^9.1.1",
@@ -57,9 +55,8 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "graphql": "^15.5.0",
-    "graphql-tools": "^7.0.4",
     "graphql-import-node": "0.0.4",
-    "subscriptions-transport-ws": "^0.9.18",
+    "graphql-tools": "^7.0.4",
     "winston": "^3.3.3"
   }
 }
