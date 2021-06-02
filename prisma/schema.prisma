@@ -7,28 +7,116 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Group {
-  id           Int      @default(autoincrement()) @id
-  name         String   @unique
-  displayName  String?
-  createdBy    String
-  createdDate  DateTime @default(now())
-  modifiedBy   String
-  modifiedDate DateTime @default(now())
-  members      Member[]
+model Starship {
+  id                      Int      @default(autoincrement()) @id
+  name                    String
+  model                   String
+  starshipClass           String
+  manufacturer            String
+  cost                    Int?
+  length                  Float?
+  crew                    Int?
+  passengers              Int?
+  maxAtmospheringSpeed    Int?
+  hyperdriveRating        Float?
+  mglt                    Float?
+  cargoCapacity           Int?
+  consumables             String
+  createdDate             DateTime @default(now())
+  modifiedDate            DateTime @default(now())
+  films                   Film[]
+  pilots                  Person[]
 }
 
-model Member {
+model Person {
   id           Int      @default(autoincrement()) @id
-  firstName    String
-  lastName     String
-  username     String
-  email        String
-  pictureId    Int?
-  workPackage  String?
-  createdBy    String
+  name         String
+  height       Int?
+  mass         Int?
+  hairColor    String
+  skinColor    String
+  eyeColor     String
+  birthYear    String
+  gender       String
   createdDate  DateTime @default(now())
-  modifiedBy   String
   modifiedDate DateTime @default(now())
-  groups       Group[]
+  homeworldId  Int?
+  homeworld    Planet?  @relation("PersonPlanet", references: [id], fields: [homeworldId])
+  films        Film[]
+  species      Species[]
+  starships    Starship[]
+  vehicles     Vehicle[]
+}
+
+model Film {
+  id           Int      @default(autoincrement()) @id
+  title        String
+  episodeId    Int
+  openingCrawl String
+  director     String
+  producer     String
+  releaseDate  String
+  createdDate  DateTime @default(now())
+  modifiedDate DateTime @default(now())
+  species      Species[]
+  starships    Starship[]
+  vehicles     Vehicle[]
+  characters   Person[]
+  planets      Planet[]
+}
+
+model Vehicle {
+  id                      Int      @default(autoincrement()) @id
+  name                    String
+  model                   String
+  vehicleClass            String
+  manufacturer            String
+  length                  Float?
+  cost                    Int?
+  crew                    Int?
+  passengers              Int?
+  maxAtmospheringSpeed    Int?
+  cargoCapacity           Int?
+  consumables             String
+  createdDate             DateTime @default(now())
+  modifiedDate            DateTime @default(now())
+  films                   Film[]
+  pilots                  Person[]
+}
+
+model Species {
+  id               Int      @default(autoincrement()) @id
+  name             String
+  classification   String
+  designation      String
+  averageHeight    Float?
+  averageLifespan  Float?
+  hairColors       String
+  skinColors       String
+  eyeColors        String
+  language         String
+  createdDate      DateTime @default(now())
+  modifiedDate     DateTime @default(now())
+  homeworldId      Int?
+  homeworld        Planet?  @relation("SpeciesPlanet", references: [id], fields: [homeworldId])
+  films            Film[]
+  people           Person[]
+}
+
+model Planet {
+  id               Int       @default(autoincrement()) @id
+  name             String
+  diameter         Int?
+  rotationPeriod   Float?
+  orbitalPeriod    Float?
+  gravity          Float?
+  population       Int?
+  climate          String
+  terrain          String
+  surfaceWater     Float?
+  createdDate      DateTime  @default(now())
+  modifiedDate     DateTime  @default(now())
+  films            Film[]
+  species          Species[] @relation(name: "SpeciesPlanet")
+  residents        Person[]  @relation(name: "PersonPlanet")
 }
