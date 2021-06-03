@@ -56,3 +56,38 @@ export async function getPlanets(parent, args, context, info) {
         planets
     };
 }
+
+
+export async function getFilmsForPlanet(parent, args, context, info) {
+    const id = parent.id;
+    const planet = await prisma.planet.findUnique({where: {id}, include: {films: true}})
+    if(planet !== null) {
+        return planet.films
+    }
+    else {
+        return [];
+    }
+}
+
+export async function getSpeciesForPlanet(parent, args, context, info) {
+    const id = parent.id;
+    const planet = await prisma.planet.findUnique({where: {id}, include: {species: true}})
+    if(planet !== null) {
+        return planet.species
+    }
+    else {
+        return [];
+    }
+}
+
+export async function getResidentsForPlanet(parent, args, context, info) {
+    const id = parent.id;
+    const planet = await prisma.planet.findUnique({where: {id}, include: {residents: true}})
+    if(planet !== null) {
+        return planet.residents
+    }
+    else {
+        return [];
+    }
+}
+

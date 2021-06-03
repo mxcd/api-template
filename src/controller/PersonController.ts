@@ -58,3 +58,60 @@ export async function getPeople(parent, args, context, info) {
         people
     };
 }
+
+
+export async function getHomeworldForPerson(parent, args, context, info) {
+    const id = parent.id;
+    const person = await prisma.person.findUnique({where: {id}, include: {homeworld: true}})
+    if(person !== null) {
+        return person.homeworld
+    }
+    else {
+        return null;
+    }
+}
+
+export async function getFilmsForPerson(parent, args, context, info) {
+    const id = parent.id;
+    const person = await prisma.person.findUnique({where: {id}, include: {films: true}})
+    if(person !== null) {
+        return person.films
+    }
+    else {
+        return [];
+    }
+}
+
+export async function getSpeciesForPerson(parent, args, context, info) {
+    const id = parent.id;
+    const person = await prisma.person.findUnique({where: {id}, include: {species: true}})
+    if(person !== null) {
+        return person.species
+    }
+    else {
+        return [];
+    }
+}
+
+export async function getStarshipsForPerson(parent, args, context, info) {
+    const id = parent.id;
+    const person = await prisma.person.findUnique({where: {id}, include: {starships: true}})
+    if(person !== null) {
+        return person.starships
+    }
+    else {
+        return [];
+    }
+}
+
+export async function getVehiclesForPerson(parent, args, context, info) {
+    const id = parent.id;
+    const person = await prisma.person.findUnique({where: {id}, include: {vehicles: true}})
+    if(person !== null) {
+        return person.vehicles
+    }
+    else {
+        return [];
+    }
+}
+

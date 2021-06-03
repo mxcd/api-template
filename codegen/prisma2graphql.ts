@@ -14,12 +14,12 @@ function getPlural(s) {
     }
 }
 
-/*function isModel(models, s) {
+function isModel(models, s) {
     for(const model of models) {
         if(model.name === s) return true
     }
     return false;
-}*/
+}
 
 function getField(model, name) {
     for(const field of model.fields) {
@@ -58,7 +58,7 @@ let modelMatch;
 do {
     modelMatch = MODEL_REGEX.exec(prismaSchema)
     if(modelMatch) {
-        let model:any = {name: modelMatch[1], fields: [], searchFields: [], filterFields: []}
+        let model:any = {name: modelMatch[1], fields: [], searchFields: [], filterFields: [], relationFields: []}
 
         console.log(`parsing model '${modelMatch[1]}'`)
         let fieldMatch;
@@ -107,7 +107,11 @@ for(const model of models) {
         field.isRequired = !prismaType.endsWith("?");
         field.isArray = prismaType.endsWith("[]");
         field.dataType = prismaType.replace("?", "").replace("[", "").replace("]", "")
+        field.isModel = isModel(models, field.dataType)
         field.gqlType = `${field.isArray?'[':''}${field.dataType}${field.isArray?'!]':''}${field.isRequired?'!':''}`
+        if(field.isModel) {
+            model.relationFields.push(field)
+        }
     }
     model.pluralName = getPlural(model.name)
 }

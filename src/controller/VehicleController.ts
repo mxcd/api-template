@@ -66,3 +66,27 @@ export async function getVehicles(parent, args, context, info) {
         vehicles
     };
 }
+
+
+export async function getFilmsForVehicle(parent, args, context, info) {
+    const id = parent.id;
+    const vehicle = await prisma.vehicle.findUnique({where: {id}, include: {films: true}})
+    if(vehicle !== null) {
+        return vehicle.films
+    }
+    else {
+        return [];
+    }
+}
+
+export async function getPilotsForVehicle(parent, args, context, info) {
+    const id = parent.id;
+    const vehicle = await prisma.vehicle.findUnique({where: {id}, include: {pilots: true}})
+    if(vehicle !== null) {
+        return vehicle.pilots
+    }
+    else {
+        return [];
+    }
+}
+

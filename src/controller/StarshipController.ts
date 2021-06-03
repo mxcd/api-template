@@ -66,3 +66,27 @@ export async function getStarships(parent, args, context, info) {
         starships
     };
 }
+
+
+export async function getFilmsForStarship(parent, args, context, info) {
+    const id = parent.id;
+    const starship = await prisma.starship.findUnique({where: {id}, include: {films: true}})
+    if(starship !== null) {
+        return starship.films
+    }
+    else {
+        return [];
+    }
+}
+
+export async function getPilotsForStarship(parent, args, context, info) {
+    const id = parent.id;
+    const starship = await prisma.starship.findUnique({where: {id}, include: {pilots: true}})
+    if(starship !== null) {
+        return starship.pilots
+    }
+    else {
+        return [];
+    }
+}
+

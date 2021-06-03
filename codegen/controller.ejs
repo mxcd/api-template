@@ -60,3 +60,20 @@ export async function get<%= model.pluralName%>(parent, args, context, info) {
         <%= model.pluralName.toLowerCase() %>
     };
 }
+
+<% for(const relationField of model.relationFields) { %>
+export async function get<%= relationField.name.charAt(0).toUpperCase() + relationField.name.slice(1) %>For<%= model.name %>(parent, args, context, info) {
+    const id = parent.id;
+    const <%= model.name.toLowerCase() %> = await prisma.<%= model.name.toLowerCase() %>.findUnique({where: {id}, include: {<%= relationField.name %>: true}})
+    if(<%= model.name.toLowerCase() %> !== null) {
+        return <%= model.name.toLowerCase() %>.<%= relationField.name %>;
+    }
+    else {
+<% if(relationField.isArray) { -%>
+        return [];
+<% } else { -%>
+        return null;
+<% } -%>
+    }
+}
+<% } %>

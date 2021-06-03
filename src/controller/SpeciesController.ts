@@ -60,3 +60,38 @@ export async function getSpecieses(parent, args, context, info) {
         specieses
     };
 }
+
+
+export async function getHomeworldForSpecies(parent, args, context, info) {
+    const id = parent.id;
+    const species = await prisma.species.findUnique({where: {id}, include: {homeworld: true}})
+    if(species !== null) {
+        return species.homeworld
+    }
+    else {
+        return null;
+    }
+}
+
+export async function getFilmsForSpecies(parent, args, context, info) {
+    const id = parent.id;
+    const species = await prisma.species.findUnique({where: {id}, include: {films: true}})
+    if(species !== null) {
+        return species.films
+    }
+    else {
+        return [];
+    }
+}
+
+export async function getPeopleForSpecies(parent, args, context, info) {
+    const id = parent.id;
+    const species = await prisma.species.findUnique({where: {id}, include: {people: true}})
+    if(species !== null) {
+        return species.people
+    }
+    else {
+        return [];
+    }
+}
+
