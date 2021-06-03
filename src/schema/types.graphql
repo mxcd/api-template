@@ -1,5 +1,12 @@
 scalar DateTime
 
+enum SortDirection {
+"""Ascending"""
+ASC
+"""Descending"""
+DESC
+}
+
 
 type Starship {
     id: Int!

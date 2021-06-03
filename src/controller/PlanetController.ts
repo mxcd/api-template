@@ -19,11 +19,23 @@ export async function getPlanets(parent, args, context, info) {
     if(filter) {
         where['AND'] = [];
         if(filter.name) where['AND'].push({name: {contains: filter.name}});
+        if(filter.diameter) where['AND'].push({diameter: {contains: filter.diameter}});
+        if(filter.rotationPeriod) where['AND'].push({rotationPeriod: {contains: filter.rotationPeriod}});
+        if(filter.orbitalPeriod) where['AND'].push({orbitalPeriod: {contains: filter.orbitalPeriod}});
+        if(filter.gravity) where['AND'].push({gravity: {contains: filter.gravity}});
+        if(filter.population) where['AND'].push({population: {contains: filter.population}});
+        if(filter.surfaceWater) where['AND'].push({surfaceWater: {contains: filter.surfaceWater}});
     }
 
     if(search) {
         where['OR'] = [
             {name: {contains: search}},
+            {diameter: {contains: search}},
+            {rotationPeriod: {contains: search}},
+            {orbitalPeriod: {contains: search}},
+            {gravity: {contains: search}},
+            {population: {contains: search}},
+            {surfaceWater: {contains: search}},
         ]
     }
 
@@ -62,7 +74,7 @@ export async function getFilmsForPlanet(parent, args, context, info) {
     const id = parent.id;
     const planet = await prisma.planet.findUnique({where: {id}, include: {films: true}})
     if(planet !== null) {
-        return planet.films
+        return planet.films;
     }
     else {
         return [];
@@ -73,7 +85,7 @@ export async function getSpeciesForPlanet(parent, args, context, info) {
     const id = parent.id;
     const planet = await prisma.planet.findUnique({where: {id}, include: {species: true}})
     if(planet !== null) {
-        return planet.species
+        return planet.species;
     }
     else {
         return [];
@@ -84,7 +96,7 @@ export async function getResidentsForPlanet(parent, args, context, info) {
     const id = parent.id;
     const planet = await prisma.planet.findUnique({where: {id}, include: {residents: true}})
     if(planet !== null) {
-        return planet.residents
+        return planet.residents;
     }
     else {
         return [];

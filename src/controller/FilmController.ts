@@ -19,11 +19,13 @@ export async function getFilms(parent, args, context, info) {
     if(filter) {
         where['AND'] = [];
         if(filter.title) where['AND'].push({title: {contains: filter.title}});
+        if(filter.releaseDate) where['AND'].push({releaseDate: {contains: filter.releaseDate}});
     }
 
     if(search) {
         where['OR'] = [
             {title: {contains: search}},
+            {releaseDate: {contains: search}},
         ]
     }
 
@@ -62,7 +64,7 @@ export async function getSpeciesForFilm(parent, args, context, info) {
     const id = parent.id;
     const film = await prisma.film.findUnique({where: {id}, include: {species: true}})
     if(film !== null) {
-        return film.species
+        return film.species;
     }
     else {
         return [];
@@ -73,7 +75,7 @@ export async function getStarshipsForFilm(parent, args, context, info) {
     const id = parent.id;
     const film = await prisma.film.findUnique({where: {id}, include: {starships: true}})
     if(film !== null) {
-        return film.starships
+        return film.starships;
     }
     else {
         return [];
@@ -84,7 +86,7 @@ export async function getVehiclesForFilm(parent, args, context, info) {
     const id = parent.id;
     const film = await prisma.film.findUnique({where: {id}, include: {vehicles: true}})
     if(film !== null) {
-        return film.vehicles
+        return film.vehicles;
     }
     else {
         return [];
@@ -95,7 +97,7 @@ export async function getCharactersForFilm(parent, args, context, info) {
     const id = parent.id;
     const film = await prisma.film.findUnique({where: {id}, include: {characters: true}})
     if(film !== null) {
-        return film.characters
+        return film.characters;
     }
     else {
         return [];
@@ -106,7 +108,7 @@ export async function getPlanetsForFilm(parent, args, context, info) {
     const id = parent.id;
     const film = await prisma.film.findUnique({where: {id}, include: {planets: true}})
     if(film !== null) {
-        return film.planets
+        return film.planets;
     }
     else {
         return [];

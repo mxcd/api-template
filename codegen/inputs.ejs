@@ -6,4 +6,11 @@ input <%= model.pluralName%>Filter {
 <% } -%>
 }
 <% } -%>
+<% if(model.sortFields.length !== 0) { -%>
+input <%= model.pluralName%>Sort {
+<% for(const field of model.filterFields) { -%>
+    <%= field.name %>: SortDirection
+<% } -%>
+}
+<% } -%>
 <% } %>

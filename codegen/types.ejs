@@ -1,5 +1,12 @@
 scalar DateTime
 
+enum SortDirection {
+"""Ascending"""
+ASC
+"""Descending"""
+DESC
+}
+
 <% for(const model of models) { %>
 type <%= model.name %> {
 <% for(const field of model.fields) { -%>

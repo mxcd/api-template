@@ -5,7 +5,7 @@ type Query {
     search fields: [<%= model.searchFields.map(f => f.name) %>]
     filter fields: [<%= model.filterFields.map(f => f.name) %>]
     """
-    <%= model.pluralName.toLowerCase() %>(limit: Int! = <%= DEFAULT_QUERY_LIMIT %>, offset: Int! = 0<%= model.searchFields.length !== 0 ? `, search: String` : ''%><%= model.filterFields.length !== 0 ? `, filter: ${model.pluralName}Filter` : ''%>): <%= model.pluralName %>Payload!
+    <%= model.pluralName.toLowerCase() %>(limit: Int! = <%= DEFAULT_QUERY_LIMIT %>, offset: Int! = 0<%= model.searchFields.length !== 0 ? `, search: String` : ''%><%= model.filterFields.length !== 0 ? `, filter: ${model.pluralName}Filter` : ''%><%= model.sortFields.length !== 0 ? `, sort: ${model.pluralName}Sort` : ''%>): <%= model.pluralName %>Payload!
 
     """
     Delivers a single <%= model.name.toLowerCase() %> by id

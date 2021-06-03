@@ -9,24 +9,31 @@ datasource db {
 
 model Starship {
   id                      Int      @default(autoincrement()) @id
-  // @search @filter
+  // @search @filter @sort
   name                    String
-  // @search @filter
+  // @search @filter @sort
   model                   String
-  // @search @filter
+  // @search @filter @sort
   starshipClass           String
-  // @search @filter
+  // @search @filter @sort
   manufacturer            String
+  // @sort
   cost                    Int?
+  // @sort
   length                  Float?
-  // @filter(equals)
+  // @filter(equals) @sort
   crew                    Int?
-  // @filter(equals)
+  // @filter(equals) @sort
   passengers              Int?
+  // @sort
   maxAtmospheringSpeed    Int?
+  // @sort
   hyperdriveRating        Float?
+  // @sort
   mglt                    Float?
+  // @sort
   cargoCapacity           Int?
+  // @sort
   consumables             String
   createdDate             DateTime @default(now())
   modifiedDate            DateTime @default(now())
@@ -38,7 +45,9 @@ model Person {
   id           Int      @default(autoincrement()) @id
   // @search @filter
   name         String
+  // @sort
   height       Int?
+  // @sort
   mass         Int?
   hairColor    String
   skinColor    String
@@ -64,6 +73,7 @@ model Film {
   openingCrawl String
   director     String
   producer     String
+  // @sort
   releaseDate  String
   createdDate  DateTime @default(now())
   modifiedDate DateTime @default(now())
@@ -78,20 +88,25 @@ model Vehicle {
   id                      Int      @default(autoincrement()) @id
   // @search @filter
   name                    String
-  // @search @filter
+  // @search @filter @sort
   model                   String
-  // @search @filter
+  // @search @filter @sort
   vehicleClass            String
-  // @search @filter
+  // @search @filter @sort
   manufacturer            String
+  // @sort
   length                  Float?
+  // @sort
   cost                    Int?
-  // @filter(equals)
+  // @filter(equals) @sort
   crew                    Int?
-  // @filter(equals)
+  // @filter(equals) @sort
   passengers              Int?
+  // @sort
   maxAtmospheringSpeed    Int?
+  // @sort
   cargoCapacity           Int?
+  // @sort
   consumables             String
   createdDate             DateTime @default(now())
   modifiedDate            DateTime @default(now())
@@ -107,7 +122,9 @@ model Species {
   classification   String
   // @search @filter
   designation      String
+  // @sort
   averageHeight    Float?
+  // @sort
   averageLifespan  Float?
   hairColors       String
   skinColors       String
@@ -125,13 +142,19 @@ model Planet {
   id               Int       @default(autoincrement()) @id
   // @search @filter
   name             String
+  // @sort
   diameter         Int?
+  // @sort
   rotationPeriod   Float?
+  // @sort
   orbitalPeriod    Float?
+  // @sort
   gravity          Float?
+  // @sort
   population       Int?
   climate          String
   terrain          String
+  // @sort
   surfaceWater     Float?
   createdDate      DateTime  @default(now())
   modifiedDate     DateTime  @default(now())

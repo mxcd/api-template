@@ -4,17 +4,52 @@ input StarshipsFilter {
     model: String
     starshipClass: String
     manufacturer: String
+    cost: Int
+    length: Float
     crew: Int
     passengers: Int
+    maxAtmospheringSpeed: Int
+    hyperdriveRating: Float
+    mglt: Float
+    cargoCapacity: Int
+    consumables: String
+}
+input StarshipsSort {
+    name: SortDirection
+    model: SortDirection
+    starshipClass: SortDirection
+    manufacturer: SortDirection
+    cost: SortDirection
+    length: SortDirection
+    crew: SortDirection
+    passengers: SortDirection
+    maxAtmospheringSpeed: SortDirection
+    hyperdriveRating: SortDirection
+    mglt: SortDirection
+    cargoCapacity: SortDirection
+    consumables: SortDirection
 }
 
 input PeopleFilter {
     name: String
+    height: Int
+    mass: Int
     gender: String
+}
+input PeopleSort {
+    name: SortDirection
+    height: SortDirection
+    mass: SortDirection
+    gender: SortDirection
 }
 
 input FilmsFilter {
     title: String
+    releaseDate: String
+}
+input FilmsSort {
+    title: SortDirection
+    releaseDate: SortDirection
 }
 
 input VehiclesFilter {
@@ -22,17 +57,59 @@ input VehiclesFilter {
     model: String
     vehicleClass: String
     manufacturer: String
+    length: Float
+    cost: Int
     crew: Int
     passengers: Int
+    maxAtmospheringSpeed: Int
+    cargoCapacity: Int
+    consumables: String
+}
+input VehiclesSort {
+    name: SortDirection
+    model: SortDirection
+    vehicleClass: SortDirection
+    manufacturer: SortDirection
+    length: SortDirection
+    cost: SortDirection
+    crew: SortDirection
+    passengers: SortDirection
+    maxAtmospheringSpeed: SortDirection
+    cargoCapacity: SortDirection
+    consumables: SortDirection
 }
 
 input SpeciesesFilter {
     name: String
     classification: String
     designation: String
+    averageHeight: Float
+    averageLifespan: Float
+}
+input SpeciesesSort {
+    name: SortDirection
+    classification: SortDirection
+    designation: SortDirection
+    averageHeight: SortDirection
+    averageLifespan: SortDirection
 }
 
 input PlanetsFilter {
     name: String
+    diameter: Int
+    rotationPeriod: Float
+    orbitalPeriod: Float
+    gravity: Float
+    population: Int
+    surfaceWater: Float
+}
+input PlanetsSort {
+    name: SortDirection
+    diameter: SortDirection
+    rotationPeriod: SortDirection
+    orbitalPeriod: SortDirection
+    gravity: SortDirection
+    population: SortDirection
+    surfaceWater: SortDirection
 }
 

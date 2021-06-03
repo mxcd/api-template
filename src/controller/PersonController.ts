@@ -19,12 +19,16 @@ export async function getPeople(parent, args, context, info) {
     if(filter) {
         where['AND'] = [];
         if(filter.name) where['AND'].push({name: {contains: filter.name}});
+        if(filter.height) where['AND'].push({height: {contains: filter.height}});
+        if(filter.mass) where['AND'].push({mass: {contains: filter.mass}});
         if(filter.gender) where['AND'].push({gender: {equals: filter.gender}});
     }
 
     if(search) {
         where['OR'] = [
             {name: {contains: search}},
+            {height: {contains: search}},
+            {mass: {contains: search}},
             {gender: {contains: search}},
         ]
     }
@@ -64,7 +68,7 @@ export async function getHomeworldForPerson(parent, args, context, info) {
     const id = parent.id;
     const person = await prisma.person.findUnique({where: {id}, include: {homeworld: true}})
     if(person !== null) {
-        return person.homeworld
+        return person.homeworld;
     }
     else {
         return null;
@@ -75,7 +79,7 @@ export async function getFilmsForPerson(parent, args, context, info) {
     const id = parent.id;
     const person = await prisma.person.findUnique({where: {id}, include: {films: true}})
     if(person !== null) {
-        return person.films
+        return person.films;
     }
     else {
         return [];
@@ -86,7 +90,7 @@ export async function getSpeciesForPerson(parent, args, context, info) {
     const id = parent.id;
     const person = await prisma.person.findUnique({where: {id}, include: {species: true}})
     if(person !== null) {
-        return person.species
+        return person.species;
     }
     else {
         return [];
@@ -97,7 +101,7 @@ export async function getStarshipsForPerson(parent, args, context, info) {
     const id = parent.id;
     const person = await prisma.person.findUnique({where: {id}, include: {starships: true}})
     if(person !== null) {
-        return person.starships
+        return person.starships;
     }
     else {
         return [];
@@ -108,7 +112,7 @@ export async function getVehiclesForPerson(parent, args, context, info) {
     const id = parent.id;
     const person = await prisma.person.findUnique({where: {id}, include: {vehicles: true}})
     if(person !== null) {
-        return person.vehicles
+        return person.vehicles;
     }
     else {
         return [];

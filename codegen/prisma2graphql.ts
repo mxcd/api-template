@@ -58,7 +58,7 @@ let modelMatch;
 do {
     modelMatch = MODEL_REGEX.exec(prismaSchema)
     if(modelMatch) {
-        let model:any = {name: modelMatch[1], fields: [], searchFields: [], filterFields: [], relationFields: []}
+        let model:any = {name: modelMatch[1], fields: [], searchFields: [], filterFields: [], sortFields: [], relationFields: []}
 
         console.log(`parsing model '${modelMatch[1]}'`)
         let fieldMatch;
@@ -87,6 +87,9 @@ do {
                     const filterModeMatch = /@filter\((\w*)\)/gm.exec(annotationMatch[1]);
                     field.filterMode = filterModeMatch ? filterModeMatch[1] : "contains";
                     model.filterFields.push(field)
+                }
+                if(annotationMatch[1].indexOf("@sort") !== 0) {
+                    model.sortFields.push(field)
                 }
             }
         } while(annotationMatch)
