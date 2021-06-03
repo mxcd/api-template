@@ -1,25 +1,155 @@
 scalar DateTime
 
-type Member @key(fields: "id") {
-    id: Int!
-    firstName: String!
-    lastName: String!
-    username: String!
-    email: String!
-    groups: [Group!]!
-    createdBy: String!
-    createdDate: DateTime!
-    modifiedBy: String!
-    modifiedDate: DateTime!
-}
 
-type Group @key(fields: "id") {
+type Starship {
     id: Int!
     name: String!
-    displayName: String!
-    members: [Member!]!
-    createdBy: String!
+    model: String!
+    starshipClass: String!
+    manufacturer: String!
+    cost: Int
+    length: Float
+    crew: Int
+    passengers: Int
+    maxAtmospheringSpeed: Int
+    hyperdriveRating: Float
+    mglt: Float
+    cargoCapacity: Int
+    consumables: String!
     createdDate: DateTime!
-    modifiedBy: String!
     modifiedDate: DateTime!
+    films: [Film!]!
+    pilots: [Person!]!
 }
+
+
+type Person {
+    id: Int!
+    name: String!
+    height: Int
+    mass: Int
+    hairColor: String!
+    skinColor: String!
+    eyeColor: String!
+    birthYear: String!
+    gender: String!
+    createdDate: DateTime!
+    modifiedDate: DateTime!
+    homeworldId: Int
+    homeworld: Planet
+    films: [Film!]!
+    species: [Species!]!
+    starships: [Starship!]!
+    vehicles: [Vehicle!]!
+}
+
+
+type Film {
+    id: Int!
+    title: String!
+    episodeId: Int!
+    openingCrawl: String!
+    director: String!
+    producer: String!
+    releaseDate: String!
+    createdDate: DateTime!
+    modifiedDate: DateTime!
+    species: [Species!]!
+    starships: [Starship!]!
+    vehicles: [Vehicle!]!
+    characters: [Person!]!
+    planets: [Planet!]!
+}
+
+
+type Vehicle {
+    id: Int!
+    name: String!
+    model: String!
+    vehicleClass: String!
+    manufacturer: String!
+    length: Float
+    cost: Int
+    crew: Int
+    passengers: Int
+    maxAtmospheringSpeed: Int
+    cargoCapacity: Int
+    consumables: String!
+    createdDate: DateTime!
+    modifiedDate: DateTime!
+    films: [Film!]!
+    pilots: [Person!]!
+}
+
+
+type Species {
+    id: Int!
+    name: String!
+    classification: String!
+    designation: String!
+    averageHeight: Float
+    averageLifespan: Float
+    hairColors: String!
+    skinColors: String!
+    eyeColors: String!
+    language: String!
+    createdDate: DateTime!
+    modifiedDate: DateTime!
+    homeworldId: Int
+    homeworld: Planet
+    films: [Film!]!
+    people: [Person!]!
+}
+
+
+type Planet {
+    id: Int!
+    name: String!
+    diameter: Int
+    rotationPeriod: Float
+    orbitalPeriod: Float
+    gravity: Float
+    population: Int
+    climate: String!
+    terrain: String!
+    surfaceWater: Float
+    createdDate: DateTime!
+    modifiedDate: DateTime!
+    films: [Film!]!
+    species: [Species!]!
+    residents: [Person!]!
+}
+
+
+
+
+type StarshipsPayload {
+    total: Int!
+    starships: [Starship!]!
+}
+
+type PeoplePayload {
+    total: Int!
+    people: [Person!]!
+}
+
+type FilmsPayload {
+    total: Int!
+    films: [Film!]!
+}
+
+type VehiclesPayload {
+    total: Int!
+    vehicles: [Vehicle!]!
+}
+
+type SpeciesesPayload {
+    total: Int!
+    specieses: [Species!]!
+}
+
+type PlanetsPayload {
+    total: Int!
+    planets: [Planet!]!
+}
+

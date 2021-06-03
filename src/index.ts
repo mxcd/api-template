@@ -2,7 +2,6 @@ import express from 'express';
 const { ApolloServer } =  require('apollo-server-express');
 import { createServer } from 'http';
 import compression from 'compression';
-import cors from 'cors';
 
 import schema from './schema/schemas';
 
@@ -19,7 +18,6 @@ async function main() {
     });
 
     log.info(`Applying middlewares`)
-    app.use('*', cors());
     app.use(compression());
     index.applyMiddleware({ app, path: '/graphql' });
 

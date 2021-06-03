@@ -9,13 +9,19 @@ datasource db {
 
 model Starship {
   id                      Int      @default(autoincrement()) @id
+  // @search @filter
   name                    String
+  // @search @filter
   model                   String
+  // @search @filter
   starshipClass           String
+  // @search @filter
   manufacturer            String
   cost                    Int?
   length                  Float?
+  // @filter(equals)
   crew                    Int?
+  // @filter(equals)
   passengers              Int?
   maxAtmospheringSpeed    Int?
   hyperdriveRating        Float?
@@ -30,6 +36,7 @@ model Starship {
 
 model Person {
   id           Int      @default(autoincrement()) @id
+  // @search @filter
   name         String
   height       Int?
   mass         Int?
@@ -37,6 +44,7 @@ model Person {
   skinColor    String
   eyeColor     String
   birthYear    String
+  // @filter(equals)
   gender       String
   createdDate  DateTime @default(now())
   modifiedDate DateTime @default(now())
@@ -50,6 +58,7 @@ model Person {
 
 model Film {
   id           Int      @default(autoincrement()) @id
+  // @search @filter
   title        String
   episodeId    Int
   openingCrawl String
@@ -67,13 +76,19 @@ model Film {
 
 model Vehicle {
   id                      Int      @default(autoincrement()) @id
+  // @search @filter
   name                    String
+  // @search @filter
   model                   String
+  // @search @filter
   vehicleClass            String
+  // @search @filter
   manufacturer            String
   length                  Float?
   cost                    Int?
+  // @filter(equals)
   crew                    Int?
+  // @filter(equals)
   passengers              Int?
   maxAtmospheringSpeed    Int?
   cargoCapacity           Int?
@@ -86,8 +101,11 @@ model Vehicle {
 
 model Species {
   id               Int      @default(autoincrement()) @id
+  // @search @filter
   name             String
+  // @search @filter
   classification   String
+  // @search @filter
   designation      String
   averageHeight    Float?
   averageLifespan  Float?
@@ -105,6 +123,7 @@ model Species {
 
 model Planet {
   id               Int       @default(autoincrement()) @id
+  // @search @filter
   name             String
   diameter         Int?
   rotationPeriod   Float?

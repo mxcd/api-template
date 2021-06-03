@@ -1,0 +1,62 @@
+import {prisma} from "../util";
+import {ApolloError} from "apollo-server-errors";
+
+export async function get<%= model.name %>(parent, args, context, info) {
+    const id = args.id;
+    const <%= model.name.toLowerCase() %> = await prisma.<%= model.name.toLowerCase() %>.findUnique({where: {id}});
+    if(!<%= model.name.toLowerCase() %>) {
+        throw new ApolloError(`No <%= model.name.toLowerCase() %> with ID '${id}' found`, "NOT_FOUND")
+    }
+    return <%= model.name.toLowerCase() %>;
+}
+
+export async function get<%= model.pluralName%>(parent, args, context, info) {
+    const filter:any = args.filter;
+    const search:string = args.search;
+    const sort: any = args.sort;
+    let where: any = {};
+
+    if(filter) {
+        where['AND'] = [];
+<% for(const filterField of model.filterFields) { -%>
+        if(filter.<%= filterField.name %>) where['AND'].push({<%= filterField.name %>: {<%= filterField.filterMode %>: filter.<%= filterField.name %>}});
+<% } -%>
+    }
+
+    if(search) {
+        where['OR'] = [
+<% for(const searchField of model.searchFields) { -%>
+            {<%= searchField.name %>: {<%= searchField.searchMode %>: search}},
+<% } -%>
+        ]
+    }
+
+    const limit: number = parseInt(args.limit) || 100
+    const offset: number = parseInt(args.offset) || 0
+
+    let orderBy: any = [];
+    if(sort) {
+        for(const key in sort) {
+            let sort = {}
+            sort[key] = args.sort[key].toLowerCase();
+            orderBy.push(sort);
+        }
+    }
+
+    const results = await prisma.$transaction([
+        prisma.<%= model.name.toLowerCase() %>.count({where}),
+        prisma.<%= model.name.toLowerCase() %>.findMany({
+            where,
+            orderBy,
+            take: limit,
+            skip: offset
+        })
+    ])
+    const total = results[0];
+    const <%= model.pluralName.toLowerCase() %> = results[1];
+
+    return {
+        total,
+        <%= model.pluralName.toLowerCase() %>
+    };
+}

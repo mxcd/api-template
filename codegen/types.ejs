@@ -1,0 +1,17 @@
+scalar DateTime
+
+<% for(const model of models) { %>
+type <%= model.name %> {
+<% for(const field of model.fields) { -%>
+    <%= field.name %>: <%= field.gqlType %>
+<% } -%>
+}
+
+<% } %>
+
+<% for(const model of models) { %>
+type <%= model.pluralName %>Payload {
+    total: Int!
+    <%= model.pluralName.toLowerCase() %>: [<%= model.name %>!]!
+}
+<% } %>

@@ -1,0 +1,75 @@
+type Query {
+
+    """
+    Delivers multiple starships
+    search fields: [name,model,starshipClass,manufacturer,crew,passengers]
+    filter fields: [name,model,starshipClass,manufacturer,crew,passengers]
+    """
+    starships(limit: Int! = 100, offset: Int! = 0, search: String, filter: StarshipsFilter): StarshipsPayload!
+
+    """
+    Delivers a single starship by id
+    """
+    starship(id: Int!): Starship
+
+    """
+    Delivers multiple people
+    search fields: [name,gender]
+    filter fields: [name,gender]
+    """
+    people(limit: Int! = 100, offset: Int! = 0, search: String, filter: PeopleFilter): PeoplePayload!
+
+    """
+    Delivers a single person by id
+    """
+    person(id: Int!): Person
+
+    """
+    Delivers multiple films
+    search fields: [title]
+    filter fields: [title]
+    """
+    films(limit: Int! = 100, offset: Int! = 0, search: String, filter: FilmsFilter): FilmsPayload!
+
+    """
+    Delivers a single film by id
+    """
+    film(id: Int!): Film
+
+    """
+    Delivers multiple vehicles
+    search fields: [name,model,vehicleClass,manufacturer,crew,passengers]
+    filter fields: [name,model,vehicleClass,manufacturer,crew,passengers]
+    """
+    vehicles(limit: Int! = 100, offset: Int! = 0, search: String, filter: VehiclesFilter): VehiclesPayload!
+
+    """
+    Delivers a single vehicle by id
+    """
+    vehicle(id: Int!): Vehicle
+
+    """
+    Delivers multiple specieses
+    search fields: [name,classification,designation]
+    filter fields: [name,classification,designation]
+    """
+    specieses(limit: Int! = 100, offset: Int! = 0, search: String, filter: SpeciesesFilter): SpeciesesPayload!
+
+    """
+    Delivers a single species by id
+    """
+    species(id: Int!): Species
+
+    """
+    Delivers multiple planets
+    search fields: [name]
+    filter fields: [name]
+    """
+    planets(limit: Int! = 100, offset: Int! = 0, search: String, filter: PlanetsFilter): PlanetsPayload!
+
+    """
+    Delivers a single planet by id
+    """
+    planet(id: Int!): Planet
+
+}

@@ -1,0 +1,19 @@
+import { IResolvers } from 'graphql-tools';
+<% for(const model of models) { -%>
+import {get<%= model.name %>, get<%= model.pluralName %>} from "./<%= model.name %>Controller";
+<% } -%>
+
+const resolvers: IResolvers = {
+    Query: {
+<% for(const model of models) { -%>
+        <%= model.name.toLowerCase() %>(parent, args, context, info) {
+            return get<%= model.name %>(parent, args, context, info);
+        },
+        <%= model.pluralName.toLowerCase() %>(parent, args, context, info) {
+            return get<%= model.pluralName %>(parent, args, context, info);
+        },
+<% } -%>
+    }
+};
+
+export default resolvers;

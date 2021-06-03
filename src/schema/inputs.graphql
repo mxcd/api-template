@@ -1,12 +1,38 @@
-input CreateMemberInput {
-    firstName: String!
-    lastName: String!
-    username: String!
-    email: String!
-    groups: [String!]
+
+input StarshipsFilter {
+    name: String
+    model: String
+    starshipClass: String
+    manufacturer: String
+    crew: Int
+    passengers: Int
 }
 
-input AddGroupInput {
-    name: String!
-    displayName: String!
+input PeopleFilter {
+    name: String
+    gender: String
 }
+
+input FilmsFilter {
+    title: String
+}
+
+input VehiclesFilter {
+    name: String
+    model: String
+    vehicleClass: String
+    manufacturer: String
+    crew: Int
+    passengers: Int
+}
+
+input SpeciesesFilter {
+    name: String
+    classification: String
+    designation: String
+}
+
+input PlanetsFilter {
+    name: String
+}
+

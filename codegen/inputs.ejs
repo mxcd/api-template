@@ -1,0 +1,9 @@
+<% for(const model of models) { %>
+<% if(model.filterFields.length !== 0) { -%>
+input <%= model.pluralName%>Filter {
+<% for(const field of model.filterFields) { -%>
+    <%= field.name %>: <%= field.dataType %>
+<% } -%>
+}
+<% } -%>
+<% } %>
