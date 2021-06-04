@@ -57,8 +57,10 @@
     "graphql": "^15.5.0",
     "graphql-import-node": "0.0.4",
     "graphql-tools": "^7.0.5",
+    "graphql2rest": "^0.6.4",
     "pluralize": "^8.0.0",
     "prisma": "^2.24.0",
+    "sofa-api": "^0.10.2",
     "winston": "^3.3.3"
   }
 }

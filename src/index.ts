@@ -2,6 +2,7 @@ import express from 'express';
 const { ApolloServer } =  require('apollo-server-express');
 import { createServer } from 'http';
 import compression from 'compression';
+import { useSofa } from 'sofa-api';
 
 import schema from './schema/schemas';
 
@@ -20,6 +21,12 @@ async function main() {
     log.info(`Applying middlewares`)
     app.use(compression());
     index.applyMiddleware({ app, path: '/graphql' });
+
+    app.use('/api', useSofa({
+        basePath: '/api',
+        schema,
+        depthLimit: 1
+    }));
 
     log.info(`Creating server`)
     const httpServer = createServer(app);
