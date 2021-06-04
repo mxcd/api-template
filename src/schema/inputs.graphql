@@ -12,8 +12,15 @@ input StarshipsSort {
     model: SortDirection
     starshipClass: SortDirection
     manufacturer: SortDirection
+    cost: SortDirection
+    length: SortDirection
     crew: SortDirection
     passengers: SortDirection
+    maxAtmospheringSpeed: SortDirection
+    hyperdriveRating: SortDirection
+    mglt: SortDirection
+    cargoCapacity: SortDirection
+    consumables: SortDirection
 }
 
 input PeopleFilter {
@@ -21,15 +28,15 @@ input PeopleFilter {
     gender: String
 }
 input PeopleSort {
-    name: SortDirection
-    gender: SortDirection
+    height: SortDirection
+    mass: SortDirection
 }
 
 input FilmsFilter {
     title: String
 }
 input FilmsSort {
-    title: SortDirection
+    releaseDate: SortDirection
 }
 
 input VehiclesFilter {
@@ -41,12 +48,16 @@ input VehiclesFilter {
     passengers: Int
 }
 input VehiclesSort {
-    name: SortDirection
     model: SortDirection
     vehicleClass: SortDirection
     manufacturer: SortDirection
+    length: SortDirection
+    cost: SortDirection
     crew: SortDirection
     passengers: SortDirection
+    maxAtmospheringSpeed: SortDirection
+    cargoCapacity: SortDirection
+    consumables: SortDirection
 }
 
 input SpeciesesFilter {
@@ -55,15 +66,19 @@ input SpeciesesFilter {
     designation: String
 }
 input SpeciesesSort {
-    name: SortDirection
-    classification: SortDirection
-    designation: SortDirection
+    averageHeight: SortDirection
+    averageLifespan: SortDirection
 }
 
 input PlanetsFilter {
     name: String
 }
 input PlanetsSort {
-    name: SortDirection
+    diameter: SortDirection
+    rotationPeriod: SortDirection
+    orbitalPeriod: SortDirection
+    gravity: SortDirection
+    population: SortDirection
+    surfaceWater: SortDirection
 }
 
