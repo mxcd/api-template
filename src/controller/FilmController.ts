@@ -19,13 +19,11 @@ export async function getFilms(parent, args, context, info) {
     if(filter) {
         where['AND'] = [];
         if(filter.title) where['AND'].push({title: {contains: filter.title}});
-        if(filter.releaseDate) where['AND'].push({releaseDate: {contains: filter.releaseDate}});
     }
 
     if(search) {
         where['OR'] = [
             {title: {contains: search}},
-            {releaseDate: {contains: search}},
         ]
     }
 

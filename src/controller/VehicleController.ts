@@ -22,13 +22,8 @@ export async function getVehicles(parent, args, context, info) {
         if(filter.model) where['AND'].push({model: {contains: filter.model}});
         if(filter.vehicleClass) where['AND'].push({vehicleClass: {contains: filter.vehicleClass}});
         if(filter.manufacturer) where['AND'].push({manufacturer: {contains: filter.manufacturer}});
-        if(filter.length) where['AND'].push({length: {contains: filter.length}});
-        if(filter.cost) where['AND'].push({cost: {contains: filter.cost}});
         if(filter.crew) where['AND'].push({crew: {equals: filter.crew}});
         if(filter.passengers) where['AND'].push({passengers: {equals: filter.passengers}});
-        if(filter.maxAtmospheringSpeed) where['AND'].push({maxAtmospheringSpeed: {contains: filter.maxAtmospheringSpeed}});
-        if(filter.cargoCapacity) where['AND'].push({cargoCapacity: {contains: filter.cargoCapacity}});
-        if(filter.consumables) where['AND'].push({consumables: {contains: filter.consumables}});
     }
 
     if(search) {
@@ -37,13 +32,6 @@ export async function getVehicles(parent, args, context, info) {
             {model: {contains: search}},
             {vehicleClass: {contains: search}},
             {manufacturer: {contains: search}},
-            {length: {contains: search}},
-            {cost: {contains: search}},
-            {crew: {contains: search}},
-            {passengers: {contains: search}},
-            {maxAtmospheringSpeed: {contains: search}},
-            {cargoCapacity: {contains: search}},
-            {consumables: {contains: search}},
         ]
     }
 

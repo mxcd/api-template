@@ -22,15 +22,8 @@ export async function getStarships(parent, args, context, info) {
         if(filter.model) where['AND'].push({model: {contains: filter.model}});
         if(filter.starshipClass) where['AND'].push({starshipClass: {contains: filter.starshipClass}});
         if(filter.manufacturer) where['AND'].push({manufacturer: {contains: filter.manufacturer}});
-        if(filter.cost) where['AND'].push({cost: {contains: filter.cost}});
-        if(filter.length) where['AND'].push({length: {contains: filter.length}});
         if(filter.crew) where['AND'].push({crew: {equals: filter.crew}});
         if(filter.passengers) where['AND'].push({passengers: {equals: filter.passengers}});
-        if(filter.maxAtmospheringSpeed) where['AND'].push({maxAtmospheringSpeed: {contains: filter.maxAtmospheringSpeed}});
-        if(filter.hyperdriveRating) where['AND'].push({hyperdriveRating: {contains: filter.hyperdriveRating}});
-        if(filter.mglt) where['AND'].push({mglt: {contains: filter.mglt}});
-        if(filter.cargoCapacity) where['AND'].push({cargoCapacity: {contains: filter.cargoCapacity}});
-        if(filter.consumables) where['AND'].push({consumables: {contains: filter.consumables}});
     }
 
     if(search) {
@@ -39,15 +32,6 @@ export async function getStarships(parent, args, context, info) {
             {model: {contains: search}},
             {starshipClass: {contains: search}},
             {manufacturer: {contains: search}},
-            {cost: {contains: search}},
-            {length: {contains: search}},
-            {crew: {contains: search}},
-            {passengers: {contains: search}},
-            {maxAtmospheringSpeed: {contains: search}},
-            {hyperdriveRating: {contains: search}},
-            {mglt: {contains: search}},
-            {cargoCapacity: {contains: search}},
-            {consumables: {contains: search}},
         ]
     }
 

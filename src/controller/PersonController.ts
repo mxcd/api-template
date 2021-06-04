@@ -19,17 +19,12 @@ export async function getPeople(parent, args, context, info) {
     if(filter) {
         where['AND'] = [];
         if(filter.name) where['AND'].push({name: {contains: filter.name}});
-        if(filter.height) where['AND'].push({height: {contains: filter.height}});
-        if(filter.mass) where['AND'].push({mass: {contains: filter.mass}});
         if(filter.gender) where['AND'].push({gender: {equals: filter.gender}});
     }
 
     if(search) {
         where['OR'] = [
             {name: {contains: search}},
-            {height: {contains: search}},
-            {mass: {contains: search}},
-            {gender: {contains: search}},
         ]
     }
 

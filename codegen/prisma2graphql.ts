@@ -78,17 +78,17 @@ do {
             annotationMatch = FIELD_ANNOTATION_REGEX.exec(modelMatch[2])
             if(annotationMatch) {
                 const field = getField(model, annotationMatch[2])
-                if(annotationMatch[1].indexOf("@search") !== 0) {
+                if(annotationMatch[1].indexOf("@search") !== -1) {
                     const searchModeMatch = /@search\((\w*)\)/gm.exec(annotationMatch[1]);
                     field.searchMode = searchModeMatch ? searchModeMatch[1] : "contains";
                     model.searchFields.push(field)
                 }
-                if(annotationMatch[1].indexOf("@filter") !== 0) {
+                if(annotationMatch[1].indexOf("@filter") !== -1) {
                     const filterModeMatch = /@filter\((\w*)\)/gm.exec(annotationMatch[1]);
                     field.filterMode = filterModeMatch ? filterModeMatch[1] : "contains";
                     model.filterFields.push(field)
                 }
-                if(annotationMatch[1].indexOf("@sort") !== 0) {
+                if(annotationMatch[1].indexOf("@sort") !== -1) {
                     model.sortFields.push(field)
                 }
             }

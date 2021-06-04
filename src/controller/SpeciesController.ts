@@ -21,8 +21,6 @@ export async function getSpecieses(parent, args, context, info) {
         if(filter.name) where['AND'].push({name: {contains: filter.name}});
         if(filter.classification) where['AND'].push({classification: {contains: filter.classification}});
         if(filter.designation) where['AND'].push({designation: {contains: filter.designation}});
-        if(filter.averageHeight) where['AND'].push({averageHeight: {contains: filter.averageHeight}});
-        if(filter.averageLifespan) where['AND'].push({averageLifespan: {contains: filter.averageLifespan}});
     }
 
     if(search) {
@@ -30,8 +28,6 @@ export async function getSpecieses(parent, args, context, info) {
             {name: {contains: search}},
             {classification: {contains: search}},
             {designation: {contains: search}},
-            {averageHeight: {contains: search}},
-            {averageLifespan: {contains: search}},
         ]
     }
 

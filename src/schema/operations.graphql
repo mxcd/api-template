@@ -2,8 +2,8 @@ type Query {
 
     """
     Delivers multiple starships
-    search fields: [name,model,starshipClass,manufacturer,cost,length,crew,passengers,maxAtmospheringSpeed,hyperdriveRating,mglt,cargoCapacity,consumables]
-    filter fields: [name,model,starshipClass,manufacturer,cost,length,crew,passengers,maxAtmospheringSpeed,hyperdriveRating,mglt,cargoCapacity,consumables]
+    search fields: [name,model,starshipClass,manufacturer]
+    filter fields: [name,model,starshipClass,manufacturer,crew,passengers]
     """
     starships(limit: Int! = 100, offset: Int! = 0, search: String, filter: StarshipsFilter, sort: StarshipsSort): StarshipsPayload!
 
@@ -14,8 +14,8 @@ type Query {
 
     """
     Delivers multiple people
-    search fields: [name,height,mass,gender]
-    filter fields: [name,height,mass,gender]
+    search fields: [name]
+    filter fields: [name,gender]
     """
     people(limit: Int! = 100, offset: Int! = 0, search: String, filter: PeopleFilter, sort: PeopleSort): PeoplePayload!
 
@@ -26,8 +26,8 @@ type Query {
 
     """
     Delivers multiple films
-    search fields: [title,releaseDate]
-    filter fields: [title,releaseDate]
+    search fields: [title]
+    filter fields: [title]
     """
     films(limit: Int! = 100, offset: Int! = 0, search: String, filter: FilmsFilter, sort: FilmsSort): FilmsPayload!
 
@@ -38,8 +38,8 @@ type Query {
 
     """
     Delivers multiple vehicles
-    search fields: [name,model,vehicleClass,manufacturer,length,cost,crew,passengers,maxAtmospheringSpeed,cargoCapacity,consumables]
-    filter fields: [name,model,vehicleClass,manufacturer,length,cost,crew,passengers,maxAtmospheringSpeed,cargoCapacity,consumables]
+    search fields: [name,model,vehicleClass,manufacturer]
+    filter fields: [name,model,vehicleClass,manufacturer,crew,passengers]
     """
     vehicles(limit: Int! = 100, offset: Int! = 0, search: String, filter: VehiclesFilter, sort: VehiclesSort): VehiclesPayload!
 
@@ -50,8 +50,8 @@ type Query {
 
     """
     Delivers multiple specieses
-    search fields: [name,classification,designation,averageHeight,averageLifespan]
-    filter fields: [name,classification,designation,averageHeight,averageLifespan]
+    search fields: [name,classification,designation]
+    filter fields: [name,classification,designation]
     """
     specieses(limit: Int! = 100, offset: Int! = 0, search: String, filter: SpeciesesFilter, sort: SpeciesesSort): SpeciesesPayload!
 
@@ -62,8 +62,8 @@ type Query {
 
     """
     Delivers multiple planets
-    search fields: [name,diameter,rotationPeriod,orbitalPeriod,gravity,population,surfaceWater]
-    filter fields: [name,diameter,rotationPeriod,orbitalPeriod,gravity,population,surfaceWater]
+    search fields: [name]
+    filter fields: [name]
     """
     planets(limit: Int! = 100, offset: Int! = 0, search: String, filter: PlanetsFilter, sort: PlanetsSort): PlanetsPayload!
 
