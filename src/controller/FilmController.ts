@@ -124,23 +124,23 @@ export async function createFilm(parent, args, context, info) {
     if('releaseDate' in args.inputs) data['releaseDate'] = args.inputs['releaseDate']
     if('species' in args.inputs) {
         data['species'] = {};
-        data['species']['set'] = args.inputs['species'].map((e:number) => { return { id: e } });
+        data['species']['connect'] = args.inputs['species'].map((e:number) => { return { id: e } });
     }
     if('starships' in args.inputs) {
         data['starships'] = {};
-        data['starships']['set'] = args.inputs['starships'].map((e:number) => { return { id: e } });
+        data['starships']['connect'] = args.inputs['starships'].map((e:number) => { return { id: e } });
     }
     if('vehicles' in args.inputs) {
         data['vehicles'] = {};
-        data['vehicles']['set'] = args.inputs['vehicles'].map((e:number) => { return { id: e } });
+        data['vehicles']['connect'] = args.inputs['vehicles'].map((e:number) => { return { id: e } });
     }
     if('characters' in args.inputs) {
         data['characters'] = {};
-        data['characters']['set'] = args.inputs['characters'].map((e:number) => { return { id: e } });
+        data['characters']['connect'] = args.inputs['characters'].map((e:number) => { return { id: e } });
     }
     if('planets' in args.inputs) {
         data['planets'] = {};
-        data['planets']['set'] = args.inputs['planets'].map((e:number) => { return { id: e } });
+        data['planets']['connect'] = args.inputs['planets'].map((e:number) => { return { id: e } });
     }
 
     const film = await prisma.film.create({data});

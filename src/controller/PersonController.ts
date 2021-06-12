@@ -128,23 +128,23 @@ export async function createPerson(parent, args, context, info) {
     if('homeworldId' in args.inputs) data['homeworldId'] = args.inputs['homeworldId']
     if('homeworld' in args.inputs) {
         data['homeworld'] = {};
-        data['homeworld']['set'] = { id: args.inputs['homeworld'] };
+        data['homeworld']['connect'] = { id: args.inputs['homeworld'] };
     }
     if('films' in args.inputs) {
         data['films'] = {};
-        data['films']['set'] = args.inputs['films'].map((e:number) => { return { id: e } });
+        data['films']['connect'] = args.inputs['films'].map((e:number) => { return { id: e } });
     }
     if('species' in args.inputs) {
         data['species'] = {};
-        data['species']['set'] = args.inputs['species'].map((e:number) => { return { id: e } });
+        data['species']['connect'] = args.inputs['species'].map((e:number) => { return { id: e } });
     }
     if('starships' in args.inputs) {
         data['starships'] = {};
-        data['starships']['set'] = args.inputs['starships'].map((e:number) => { return { id: e } });
+        data['starships']['connect'] = args.inputs['starships'].map((e:number) => { return { id: e } });
     }
     if('vehicles' in args.inputs) {
         data['vehicles'] = {};
-        data['vehicles']['set'] = args.inputs['vehicles'].map((e:number) => { return { id: e } });
+        data['vehicles']['connect'] = args.inputs['vehicles'].map((e:number) => { return { id: e } });
     }
 
     const person = await prisma.person.create({data});

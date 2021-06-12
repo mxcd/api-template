@@ -105,15 +105,15 @@ export async function createPlanet(parent, args, context, info) {
     if('surfaceWater' in args.inputs) data['surfaceWater'] = args.inputs['surfaceWater']
     if('films' in args.inputs) {
         data['films'] = {};
-        data['films']['set'] = args.inputs['films'].map((e:number) => { return { id: e } });
+        data['films']['connect'] = args.inputs['films'].map((e:number) => { return { id: e } });
     }
     if('species' in args.inputs) {
         data['species'] = {};
-        data['species']['set'] = args.inputs['species'].map((e:number) => { return { id: e } });
+        data['species']['connect'] = args.inputs['species'].map((e:number) => { return { id: e } });
     }
     if('residents' in args.inputs) {
         data['residents'] = {};
-        data['residents']['set'] = args.inputs['residents'].map((e:number) => { return { id: e } });
+        data['residents']['connect'] = args.inputs['residents'].map((e:number) => { return { id: e } });
     }
 
     const planet = await prisma.planet.create({data});

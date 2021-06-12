@@ -106,11 +106,11 @@ export async function createStarship(parent, args, context, info) {
     if('consumables' in args.inputs) data['consumables'] = args.inputs['consumables']
     if('films' in args.inputs) {
         data['films'] = {};
-        data['films']['set'] = args.inputs['films'].map((e:number) => { return { id: e } });
+        data['films']['connect'] = args.inputs['films'].map((e:number) => { return { id: e } });
     }
     if('pilots' in args.inputs) {
         data['pilots'] = {};
-        data['pilots']['set'] = args.inputs['pilots'].map((e:number) => { return { id: e } });
+        data['pilots']['connect'] = args.inputs['pilots'].map((e:number) => { return { id: e } });
     }
 
     const starship = await prisma.starship.create({data});

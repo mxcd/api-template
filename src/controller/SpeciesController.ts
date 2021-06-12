@@ -110,15 +110,15 @@ export async function createSpecies(parent, args, context, info) {
     if('homeworldId' in args.inputs) data['homeworldId'] = args.inputs['homeworldId']
     if('homeworld' in args.inputs) {
         data['homeworld'] = {};
-        data['homeworld']['set'] = { id: args.inputs['homeworld'] };
+        data['homeworld']['connect'] = { id: args.inputs['homeworld'] };
     }
     if('films' in args.inputs) {
         data['films'] = {};
-        data['films']['set'] = args.inputs['films'].map((e:number) => { return { id: e } });
+        data['films']['connect'] = args.inputs['films'].map((e:number) => { return { id: e } });
     }
     if('people' in args.inputs) {
         data['people'] = {};
-        data['people']['set'] = args.inputs['people'].map((e:number) => { return { id: e } });
+        data['people']['connect'] = args.inputs['people'].map((e:number) => { return { id: e } });
     }
 
     const species = await prisma.species.create({data});

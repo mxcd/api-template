@@ -86,12 +86,12 @@ export async function create<%= model.name %>(parent, args, context, info) {
                 <%_ if(field.isArray) { -%>
     if('<%= field.name %>' in args.inputs) {
         data['<%= field.name %>'] = {};
-        data['<%= field.name %>']['set'] = args.inputs['<%= field.name %>'].map((e:number) => { return { id: e } });
+        data['<%= field.name %>']['connect'] = args.inputs['<%= field.name %>'].map((e:number) => { return { id: e } });
     }
                 <%_ } else { -%>
     if('<%= field.name %>' in args.inputs) {
         data['<%= field.name %>'] = {};
-        data['<%= field.name %>']['set'] = { id: args.inputs['<%= field.name %>'] };
+        data['<%= field.name %>']['connect'] = { id: args.inputs['<%= field.name %>'] };
     }
                 <%_ } -%>
             <%_ } else { -%>
