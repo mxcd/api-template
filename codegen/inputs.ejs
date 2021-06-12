@@ -1,16 +1,48 @@
 <% for(const model of models) { %>
 <% if(model.filterFields.length !== 0) { -%>
-input <%= model.pluralName%>Filter {
+input <%= model.pluralName%>FilterInput {
 <% for(const field of model.filterFields) { -%>
     <%= field.name %>: <%= field.dataType %>
 <% } -%>
 }
 <% } -%>
 <% if(model.sortFields.length !== 0) { -%>
-input <%= model.pluralName%>Sort {
+input <%= model.pluralName%>SortInput {
 <% for(const field of model.sortFields) { -%>
     <%= field.name %>: SortDirection
 <% } -%>
 }
 <% } -%>
+
+input <%= model.name %>EditInput {
+    <%_ for(const field of model.fields) { -%>
+        <%_ if(field.name !== 'createdDate' && field.name !== 'modifiedDate' && field.name !== 'id') { -%>
+            <%_ if(field.isModel) { -%>
+                <%_ if(field.isArray) { -%>
+    <%= field.name %>: [Int!]
+                <%_ } else { -%>
+    <%= field.name %>: Int
+                <%_ } -%>
+            <%_ } else { -%>
+    <%= field.name %>: <%= field.dataType %>
+            <%_ } -%>
+        <%_ } -%>
+    <%_ } -%>
+}
+
+input <%= model.name %>CreateInput {
+<%_ for(const field of model.fields) { -%>
+    <%_ if(field.name !== 'createdDate' && field.name !== 'modifiedDate' && field.name !== 'id') { -%>
+        <%_ if(field.isModel) { -%>
+            <%_ if(field.isArray) { -%>
+    <%= field.name %>: [Int!]
+            <%_ } else { -%>
+    <%= field.name %>: Int
+            <%_ } -%>
+        <%_ } else { -%>
+    <%= field.name %>: <%= field.dataType %><%= field.isRequired ? '!' : '' %>
+        <%_ } -%>
+    <%_ } -%>
+<%_ } -%>
+}
 <% } %>

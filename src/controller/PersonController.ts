@@ -114,3 +114,81 @@ export async function getVehiclesForPerson(parent, args, context, info) {
     }
 }
 
+
+export async function createPerson(parent, args, context, info) {
+    const data:any = {}
+    if('name' in args.inputs) data['name'] = args.inputs['name']
+    if('height' in args.inputs) data['height'] = args.inputs['height']
+    if('mass' in args.inputs) data['mass'] = args.inputs['mass']
+    if('hairColor' in args.inputs) data['hairColor'] = args.inputs['hairColor']
+    if('skinColor' in args.inputs) data['skinColor'] = args.inputs['skinColor']
+    if('eyeColor' in args.inputs) data['eyeColor'] = args.inputs['eyeColor']
+    if('birthYear' in args.inputs) data['birthYear'] = args.inputs['birthYear']
+    if('gender' in args.inputs) data['gender'] = args.inputs['gender']
+    if('homeworldId' in args.inputs) data['homeworldId'] = args.inputs['homeworldId']
+    if('homeworld' in args.inputs) {
+        data['homeworld'] = {};
+        data['homeworld']['set'] = { id: args.inputs['homeworld'] };
+    }
+    if('films' in args.inputs) {
+        data['films'] = {};
+        data['films']['set'] = args.inputs['films'].map((e:number) => { return { id: e } });
+    }
+    if('species' in args.inputs) {
+        data['species'] = {};
+        data['species']['set'] = args.inputs['species'].map((e:number) => { return { id: e } });
+    }
+    if('starships' in args.inputs) {
+        data['starships'] = {};
+        data['starships']['set'] = args.inputs['starships'].map((e:number) => { return { id: e } });
+    }
+    if('vehicles' in args.inputs) {
+        data['vehicles'] = {};
+        data['vehicles']['set'] = args.inputs['vehicles'].map((e:number) => { return { id: e } });
+    }
+
+    const person = await prisma.person.create({data});
+    return person;
+}
+
+export async function editPerson(parent, args, context, info) {
+    const id = args.id;
+    const data:any = {}
+    if('name' in args.inputs) data['name'] = args.inputs['name']
+    if('height' in args.inputs) data['height'] = args.inputs['height']
+    if('mass' in args.inputs) data['mass'] = args.inputs['mass']
+    if('hairColor' in args.inputs) data['hairColor'] = args.inputs['hairColor']
+    if('skinColor' in args.inputs) data['skinColor'] = args.inputs['skinColor']
+    if('eyeColor' in args.inputs) data['eyeColor'] = args.inputs['eyeColor']
+    if('birthYear' in args.inputs) data['birthYear'] = args.inputs['birthYear']
+    if('gender' in args.inputs) data['gender'] = args.inputs['gender']
+    if('homeworldId' in args.inputs) data['homeworldId'] = args.inputs['homeworldId']
+    if('homeworld' in args.inputs) {
+        data['homeworld'] = {};
+        data['homeworld']['set'] = { id: args.inputs['homeworld'] };
+    }
+    if('films' in args.inputs) {
+        data['films'] = {};
+        data['films']['set'] = args.inputs['films'].map((e:number) => { return { id: e } });
+    }
+    if('species' in args.inputs) {
+        data['species'] = {};
+        data['species']['set'] = args.inputs['species'].map((e:number) => { return { id: e } });
+    }
+    if('starships' in args.inputs) {
+        data['starships'] = {};
+        data['starships']['set'] = args.inputs['starships'].map((e:number) => { return { id: e } });
+    }
+    if('vehicles' in args.inputs) {
+        data['vehicles'] = {};
+        data['vehicles']['set'] = args.inputs['vehicles'].map((e:number) => { return { id: e } });
+    }
+    const person = await prisma.person.update({where: {id}, data});
+    return person;
+}
+
+export async function deletePerson(parent, args, context, info) {
+    const id = args.id;
+    await prisma.person.delete({where: {id}});
+    return true;
+}

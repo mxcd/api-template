@@ -5,71 +5,101 @@ type Query {
     search fields: [name,model,starshipClass,manufacturer]
     filter fields: [name,model,starshipClass,manufacturer,crew,passengers]
     """
-    starships(limit: Int! = 100, offset: Int! = 0, search: String, filter: StarshipsFilter, sort: StarshipsSort): StarshipsPayload!
+    starships(limit: Int! = 100, offset: Int! = 0, search: String, filter: StarshipsFilterInput, sort: StarshipsSortInput): StarshipsPayload!
 
     """
     Delivers a single starship by id
     """
     starship(id: Int!): Starship
 
+    createStarship(inputs: StarshipCreateInput): Starship!
+    editStarship(id: Int!, inputs: StarshipEditInput): Starship!
+    deleteStarship(id: Int!): Boolean!
+
+
     """
     Delivers multiple people
     search fields: [name]
     filter fields: [name,gender]
     """
-    people(limit: Int! = 100, offset: Int! = 0, search: String, filter: PeopleFilter, sort: PeopleSort): PeoplePayload!
+    people(limit: Int! = 100, offset: Int! = 0, search: String, filter: PeopleFilterInput, sort: PeopleSortInput): PeoplePayload!
 
     """
     Delivers a single person by id
     """
     person(id: Int!): Person
 
+    createPerson(inputs: PersonCreateInput): Person!
+    editPerson(id: Int!, inputs: PersonEditInput): Person!
+    deletePerson(id: Int!): Boolean!
+
+
     """
     Delivers multiple films
     search fields: [title]
     filter fields: [title]
     """
-    films(limit: Int! = 100, offset: Int! = 0, search: String, filter: FilmsFilter, sort: FilmsSort): FilmsPayload!
+    films(limit: Int! = 100, offset: Int! = 0, search: String, filter: FilmsFilterInput, sort: FilmsSortInput): FilmsPayload!
 
     """
     Delivers a single film by id
     """
     film(id: Int!): Film
 
+    createFilm(inputs: FilmCreateInput): Film!
+    editFilm(id: Int!, inputs: FilmEditInput): Film!
+    deleteFilm(id: Int!): Boolean!
+
+
     """
     Delivers multiple vehicles
     search fields: [name,model,vehicleClass,manufacturer]
     filter fields: [name,model,vehicleClass,manufacturer,crew,passengers]
     """
-    vehicles(limit: Int! = 100, offset: Int! = 0, search: String, filter: VehiclesFilter, sort: VehiclesSort): VehiclesPayload!
+    vehicles(limit: Int! = 100, offset: Int! = 0, search: String, filter: VehiclesFilterInput, sort: VehiclesSortInput): VehiclesPayload!
 
     """
     Delivers a single vehicle by id
     """
     vehicle(id: Int!): Vehicle
 
+    createVehicle(inputs: VehicleCreateInput): Vehicle!
+    editVehicle(id: Int!, inputs: VehicleEditInput): Vehicle!
+    deleteVehicle(id: Int!): Boolean!
+
+
     """
     Delivers multiple specieses
     search fields: [name,classification,designation]
     filter fields: [name,classification,designation]
     """
-    specieses(limit: Int! = 100, offset: Int! = 0, search: String, filter: SpeciesesFilter, sort: SpeciesesSort): SpeciesesPayload!
+    specieses(limit: Int! = 100, offset: Int! = 0, search: String, filter: SpeciesesFilterInput, sort: SpeciesesSortInput): SpeciesesPayload!
 
     """
     Delivers a single species by id
     """
     species(id: Int!): Species
 
+    createSpecies(inputs: SpeciesCreateInput): Species!
+    editSpecies(id: Int!, inputs: SpeciesEditInput): Species!
+    deleteSpecies(id: Int!): Boolean!
+
+
     """
     Delivers multiple planets
     search fields: [name]
     filter fields: [name]
     """
-    planets(limit: Int! = 100, offset: Int! = 0, search: String, filter: PlanetsFilter, sort: PlanetsSort): PlanetsPayload!
+    planets(limit: Int! = 100, offset: Int! = 0, search: String, filter: PlanetsFilterInput, sort: PlanetsSortInput): PlanetsPayload!
 
     """
     Delivers a single planet by id
     """
     planet(id: Int!): Planet
+
+    createPlanet(inputs: PlanetCreateInput): Planet!
+    editPlanet(id: Int!, inputs: PlanetEditInput): Planet!
+    deletePlanet(id: Int!): Boolean!
+
 
 }

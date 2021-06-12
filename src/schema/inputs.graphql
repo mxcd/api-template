@@ -1,5 +1,5 @@
 
-input StarshipsFilter {
+input StarshipsFilterInput {
     name: String
     model: String
     starshipClass: String
@@ -7,7 +7,7 @@ input StarshipsFilter {
     crew: Int
     passengers: Int
 }
-input StarshipsSort {
+input StarshipsSortInput {
     name: SortDirection
     model: SortDirection
     starshipClass: SortDirection
@@ -23,23 +23,121 @@ input StarshipsSort {
     consumables: SortDirection
 }
 
-input PeopleFilter {
+input StarshipEditInput {
+    name: String
+    model: String
+    starshipClass: String
+    manufacturer: String
+    cost: Int
+    length: Float
+    crew: Int
+    passengers: Int
+    maxAtmospheringSpeed: Int
+    hyperdriveRating: Float
+    mglt: Float
+    cargoCapacity: Int
+    consumables: String
+    films: [Int!]
+    pilots: [Int!]
+}
+
+input StarshipCreateInput {
+    name: String!
+    model: String!
+    starshipClass: String!
+    manufacturer: String!
+    cost: Int
+    length: Float
+    crew: Int
+    passengers: Int
+    maxAtmospheringSpeed: Int
+    hyperdriveRating: Float
+    mglt: Float
+    cargoCapacity: Int
+    consumables: String!
+    films: [Int!]
+    pilots: [Int!]
+}
+
+input PeopleFilterInput {
     name: String
     gender: String
 }
-input PeopleSort {
+input PeopleSortInput {
     height: SortDirection
     mass: SortDirection
 }
 
-input FilmsFilter {
+input PersonEditInput {
+    name: String
+    height: Int
+    mass: Int
+    hairColor: String
+    skinColor: String
+    eyeColor: String
+    birthYear: String
+    gender: String
+    homeworldId: Int
+    homeworld: Int
+    films: [Int!]
+    species: [Int!]
+    starships: [Int!]
+    vehicles: [Int!]
+}
+
+input PersonCreateInput {
+    name: String!
+    height: Int
+    mass: Int
+    hairColor: String!
+    skinColor: String!
+    eyeColor: String!
+    birthYear: String!
+    gender: String!
+    homeworldId: Int
+    homeworld: Int
+    films: [Int!]
+    species: [Int!]
+    starships: [Int!]
+    vehicles: [Int!]
+}
+
+input FilmsFilterInput {
     title: String
 }
-input FilmsSort {
+input FilmsSortInput {
     releaseDate: SortDirection
 }
 
-input VehiclesFilter {
+input FilmEditInput {
+    title: String
+    episodeId: Int
+    openingCrawl: String
+    director: String
+    producer: String
+    releaseDate: String
+    species: [Int!]
+    starships: [Int!]
+    vehicles: [Int!]
+    characters: [Int!]
+    planets: [Int!]
+}
+
+input FilmCreateInput {
+    title: String!
+    episodeId: Int!
+    openingCrawl: String!
+    director: String!
+    producer: String!
+    releaseDate: String!
+    species: [Int!]
+    starships: [Int!]
+    vehicles: [Int!]
+    characters: [Int!]
+    planets: [Int!]
+}
+
+input VehiclesFilterInput {
     name: String
     model: String
     vehicleClass: String
@@ -47,7 +145,7 @@ input VehiclesFilter {
     crew: Int
     passengers: Int
 }
-input VehiclesSort {
+input VehiclesSortInput {
     model: SortDirection
     vehicleClass: SortDirection
     manufacturer: SortDirection
@@ -60,25 +158,119 @@ input VehiclesSort {
     consumables: SortDirection
 }
 
-input SpeciesesFilter {
+input VehicleEditInput {
+    name: String
+    model: String
+    vehicleClass: String
+    manufacturer: String
+    length: Float
+    cost: Int
+    crew: Int
+    passengers: Int
+    maxAtmospheringSpeed: Int
+    cargoCapacity: Int
+    consumables: String
+    films: [Int!]
+    pilots: [Int!]
+}
+
+input VehicleCreateInput {
+    name: String!
+    model: String!
+    vehicleClass: String!
+    manufacturer: String!
+    length: Float
+    cost: Int
+    crew: Int
+    passengers: Int
+    maxAtmospheringSpeed: Int
+    cargoCapacity: Int
+    consumables: String!
+    films: [Int!]
+    pilots: [Int!]
+}
+
+input SpeciesesFilterInput {
     name: String
     classification: String
     designation: String
 }
-input SpeciesesSort {
+input SpeciesesSortInput {
     averageHeight: SortDirection
     averageLifespan: SortDirection
 }
 
-input PlanetsFilter {
+input SpeciesEditInput {
+    name: String
+    classification: String
+    designation: String
+    averageHeight: Float
+    averageLifespan: Float
+    hairColors: String
+    skinColors: String
+    eyeColors: String
+    language: String
+    homeworldId: Int
+    homeworld: Int
+    films: [Int!]
+    people: [Int!]
+}
+
+input SpeciesCreateInput {
+    name: String!
+    classification: String!
+    designation: String!
+    averageHeight: Float
+    averageLifespan: Float
+    hairColors: String!
+    skinColors: String!
+    eyeColors: String!
+    language: String!
+    homeworldId: Int
+    homeworld: Int
+    films: [Int!]
+    people: [Int!]
+}
+
+input PlanetsFilterInput {
     name: String
 }
-input PlanetsSort {
+input PlanetsSortInput {
     diameter: SortDirection
     rotationPeriod: SortDirection
     orbitalPeriod: SortDirection
     gravity: SortDirection
     population: SortDirection
     surfaceWater: SortDirection
+}
+
+input PlanetEditInput {
+    name: String
+    diameter: Int
+    rotationPeriod: Float
+    orbitalPeriod: Float
+    gravity: Float
+    population: Int
+    climate: String
+    terrain: String
+    surfaceWater: Float
+    films: [Int!]
+    species: [Int!]
+    residents: [Int!]
+}
+
+input PlanetCreateInput {
+    name: String!
+    diameter: Int
+    rotationPeriod: Float
+    orbitalPeriod: Float
+    gravity: Float
+    population: Int
+    climate: String!
+    terrain: String!
+    surfaceWater: Float
+    films: [Int!]
+    species: [Int!]
+    residents: [Int!]
 }
 

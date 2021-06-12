@@ -1,6 +1,6 @@
 import { IResolvers } from 'graphql-tools';
 <% for(const model of models) { -%>
-import {get<%= model.name %>, get<%= model.pluralName %><% for(const relationField of model.relationFields) { %>, get<%= relationField.name.charAt(0).toUpperCase() + relationField.name.slice(1) %>For<%= model.name %><% } %>} from "./<%= model.name %>Controller";
+import {get<%= model.name %>, get<%= model.pluralName %>, create<%= model.name %>, edit<%= model.name %>, delete<%= model.name %><% for(const relationField of model.relationFields) { %>, get<%= relationField.name.charAt(0).toUpperCase() + relationField.name.slice(1) %>For<%= model.name %><% } %>} from "./<%= model.name %>Controller";
 <% } -%>
 
 const resolvers: IResolvers = {
@@ -11,6 +11,15 @@ const resolvers: IResolvers = {
         },
         <%= model.pluralName.toLowerCase() %>(parent, args, context, info) {
             return get<%= model.pluralName %>(parent, args, context, info);
+        },
+        create<%= model.name %>(parent, args, context, info) {
+            return create<%= model.name %>(parent, args, context, info);
+        },
+        edit<%= model.name %>(parent, args, context, info) {
+            return edit<%= model.name %>(parent, args, context, info);
+        },
+        delete<%= model.name %>(parent, args, context, info) {
+            return delete<%= model.name %>(parent, args, context, info);
         },
 <% } -%>
     },

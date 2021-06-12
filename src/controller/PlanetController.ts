@@ -91,3 +91,65 @@ export async function getResidentsForPlanet(parent, args, context, info) {
     }
 }
 
+
+export async function createPlanet(parent, args, context, info) {
+    const data:any = {}
+    if('name' in args.inputs) data['name'] = args.inputs['name']
+    if('diameter' in args.inputs) data['diameter'] = args.inputs['diameter']
+    if('rotationPeriod' in args.inputs) data['rotationPeriod'] = args.inputs['rotationPeriod']
+    if('orbitalPeriod' in args.inputs) data['orbitalPeriod'] = args.inputs['orbitalPeriod']
+    if('gravity' in args.inputs) data['gravity'] = args.inputs['gravity']
+    if('population' in args.inputs) data['population'] = args.inputs['population']
+    if('climate' in args.inputs) data['climate'] = args.inputs['climate']
+    if('terrain' in args.inputs) data['terrain'] = args.inputs['terrain']
+    if('surfaceWater' in args.inputs) data['surfaceWater'] = args.inputs['surfaceWater']
+    if('films' in args.inputs) {
+        data['films'] = {};
+        data['films']['set'] = args.inputs['films'].map((e:number) => { return { id: e } });
+    }
+    if('species' in args.inputs) {
+        data['species'] = {};
+        data['species']['set'] = args.inputs['species'].map((e:number) => { return { id: e } });
+    }
+    if('residents' in args.inputs) {
+        data['residents'] = {};
+        data['residents']['set'] = args.inputs['residents'].map((e:number) => { return { id: e } });
+    }
+
+    const planet = await prisma.planet.create({data});
+    return planet;
+}
+
+export async function editPlanet(parent, args, context, info) {
+    const id = args.id;
+    const data:any = {}
+    if('name' in args.inputs) data['name'] = args.inputs['name']
+    if('diameter' in args.inputs) data['diameter'] = args.inputs['diameter']
+    if('rotationPeriod' in args.inputs) data['rotationPeriod'] = args.inputs['rotationPeriod']
+    if('orbitalPeriod' in args.inputs) data['orbitalPeriod'] = args.inputs['orbitalPeriod']
+    if('gravity' in args.inputs) data['gravity'] = args.inputs['gravity']
+    if('population' in args.inputs) data['population'] = args.inputs['population']
+    if('climate' in args.inputs) data['climate'] = args.inputs['climate']
+    if('terrain' in args.inputs) data['terrain'] = args.inputs['terrain']
+    if('surfaceWater' in args.inputs) data['surfaceWater'] = args.inputs['surfaceWater']
+    if('films' in args.inputs) {
+        data['films'] = {};
+        data['films']['set'] = args.inputs['films'].map((e:number) => { return { id: e } });
+    }
+    if('species' in args.inputs) {
+        data['species'] = {};
+        data['species']['set'] = args.inputs['species'].map((e:number) => { return { id: e } });
+    }
+    if('residents' in args.inputs) {
+        data['residents'] = {};
+        data['residents']['set'] = args.inputs['residents'].map((e:number) => { return { id: e } });
+    }
+    const planet = await prisma.planet.update({where: {id}, data});
+    return planet;
+}
+
+export async function deletePlanet(parent, args, context, info) {
+    const id = args.id;
+    await prisma.planet.delete({where: {id}});
+    return true;
+}

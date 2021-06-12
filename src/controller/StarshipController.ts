@@ -88,3 +88,65 @@ export async function getPilotsForStarship(parent, args, context, info) {
     }
 }
 
+
+export async function createStarship(parent, args, context, info) {
+    const data:any = {}
+    if('name' in args.inputs) data['name'] = args.inputs['name']
+    if('model' in args.inputs) data['model'] = args.inputs['model']
+    if('starshipClass' in args.inputs) data['starshipClass'] = args.inputs['starshipClass']
+    if('manufacturer' in args.inputs) data['manufacturer'] = args.inputs['manufacturer']
+    if('cost' in args.inputs) data['cost'] = args.inputs['cost']
+    if('length' in args.inputs) data['length'] = args.inputs['length']
+    if('crew' in args.inputs) data['crew'] = args.inputs['crew']
+    if('passengers' in args.inputs) data['passengers'] = args.inputs['passengers']
+    if('maxAtmospheringSpeed' in args.inputs) data['maxAtmospheringSpeed'] = args.inputs['maxAtmospheringSpeed']
+    if('hyperdriveRating' in args.inputs) data['hyperdriveRating'] = args.inputs['hyperdriveRating']
+    if('mglt' in args.inputs) data['mglt'] = args.inputs['mglt']
+    if('cargoCapacity' in args.inputs) data['cargoCapacity'] = args.inputs['cargoCapacity']
+    if('consumables' in args.inputs) data['consumables'] = args.inputs['consumables']
+    if('films' in args.inputs) {
+        data['films'] = {};
+        data['films']['set'] = args.inputs['films'].map((e:number) => { return { id: e } });
+    }
+    if('pilots' in args.inputs) {
+        data['pilots'] = {};
+        data['pilots']['set'] = args.inputs['pilots'].map((e:number) => { return { id: e } });
+    }
+
+    const starship = await prisma.starship.create({data});
+    return starship;
+}
+
+export async function editStarship(parent, args, context, info) {
+    const id = args.id;
+    const data:any = {}
+    if('name' in args.inputs) data['name'] = args.inputs['name']
+    if('model' in args.inputs) data['model'] = args.inputs['model']
+    if('starshipClass' in args.inputs) data['starshipClass'] = args.inputs['starshipClass']
+    if('manufacturer' in args.inputs) data['manufacturer'] = args.inputs['manufacturer']
+    if('cost' in args.inputs) data['cost'] = args.inputs['cost']
+    if('length' in args.inputs) data['length'] = args.inputs['length']
+    if('crew' in args.inputs) data['crew'] = args.inputs['crew']
+    if('passengers' in args.inputs) data['passengers'] = args.inputs['passengers']
+    if('maxAtmospheringSpeed' in args.inputs) data['maxAtmospheringSpeed'] = args.inputs['maxAtmospheringSpeed']
+    if('hyperdriveRating' in args.inputs) data['hyperdriveRating'] = args.inputs['hyperdriveRating']
+    if('mglt' in args.inputs) data['mglt'] = args.inputs['mglt']
+    if('cargoCapacity' in args.inputs) data['cargoCapacity'] = args.inputs['cargoCapacity']
+    if('consumables' in args.inputs) data['consumables'] = args.inputs['consumables']
+    if('films' in args.inputs) {
+        data['films'] = {};
+        data['films']['set'] = args.inputs['films'].map((e:number) => { return { id: e } });
+    }
+    if('pilots' in args.inputs) {
+        data['pilots'] = {};
+        data['pilots']['set'] = args.inputs['pilots'].map((e:number) => { return { id: e } });
+    }
+    const starship = await prisma.starship.update({where: {id}, data});
+    return starship;
+}
+
+export async function deleteStarship(parent, args, context, info) {
+    const id = args.id;
+    await prisma.starship.delete({where: {id}});
+    return true;
+}

@@ -77,3 +77,61 @@ export async function get<%= relationField.name.charAt(0).toUpperCase() + relati
     }
 }
 <% } %>
+
+export async function create<%= model.name %>(parent, args, context, info) {
+    const data:any = {}
+    <%_ for(const field of model.fields) { -%>
+        <%_ if(field.name !== 'createdDate' && field.name !== 'modifiedDate' && field.name !== 'id') { -%>
+            <%_ if(field.isModel) { -%>
+                <%_ if(field.isArray) { -%>
+    if('<%= field.name %>' in args.inputs) {
+        data['<%= field.name %>'] = {};
+        data['<%= field.name %>']['set'] = args.inputs['<%= field.name %>'].map((e:number) => { return { id: e } });
+    }
+                <%_ } else { -%>
+    if('<%= field.name %>' in args.inputs) {
+        data['<%= field.name %>'] = {};
+        data['<%= field.name %>']['set'] = { id: args.inputs['<%= field.name %>'] };
+    }
+                <%_ } -%>
+            <%_ } else { -%>
+    if('<%= field.name %>' in args.inputs) data['<%= field.name %>'] = args.inputs['<%= field.name %>']
+            <%_ } -%>
+        <%_ } -%>
+    <%_ } -%>
+
+    const <%= model.name.toLowerCase() %> = await prisma.<%= model.name.toLowerCase() %>.create({data});
+    return <%= model.name.toLowerCase() %>;
+}
+
+export async function edit<%= model.name %>(parent, args, context, info) {
+    const id = args.id;
+    const data:any = {}
+    <%_ for(const field of model.fields) { -%>
+        <%_ if(field.name !== 'createdDate' && field.name !== 'modifiedDate' && field.name !== 'id') { -%>
+            <%_ if(field.isModel) { -%>
+                <%_ if(field.isArray) { -%>
+    if('<%= field.name %>' in args.inputs) {
+        data['<%= field.name %>'] = {};
+        data['<%= field.name %>']['set'] = args.inputs['<%= field.name %>'].map((e:number) => { return { id: e } });
+    }
+                <%_ } else { -%>
+    if('<%= field.name %>' in args.inputs) {
+        data['<%= field.name %>'] = {};
+        data['<%= field.name %>']['set'] = { id: args.inputs['<%= field.name %>'] };
+    }
+                <%_ } -%>
+            <%_ } else { -%>
+    if('<%= field.name %>' in args.inputs) data['<%= field.name %>'] = args.inputs['<%= field.name %>']
+            <%_ } -%>
+        <%_ } -%>
+    <%_ } -%>
+    const <%= model.name.toLowerCase() %> = await prisma.<%= model.name.toLowerCase() %>.update({where: {id}, data});
+    return <%= model.name.toLowerCase() %>;
+}
+
+export async function delete<%= model.name %>(parent, args, context, info) {
+    const id = args.id;
+    await prisma.<%= model.name.toLowerCase() %>.delete({where: {id}});
+    return true;
+}

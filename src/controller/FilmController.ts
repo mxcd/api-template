@@ -113,3 +113,75 @@ export async function getPlanetsForFilm(parent, args, context, info) {
     }
 }
 
+
+export async function createFilm(parent, args, context, info) {
+    const data:any = {}
+    if('title' in args.inputs) data['title'] = args.inputs['title']
+    if('episodeId' in args.inputs) data['episodeId'] = args.inputs['episodeId']
+    if('openingCrawl' in args.inputs) data['openingCrawl'] = args.inputs['openingCrawl']
+    if('director' in args.inputs) data['director'] = args.inputs['director']
+    if('producer' in args.inputs) data['producer'] = args.inputs['producer']
+    if('releaseDate' in args.inputs) data['releaseDate'] = args.inputs['releaseDate']
+    if('species' in args.inputs) {
+        data['species'] = {};
+        data['species']['set'] = args.inputs['species'].map((e:number) => { return { id: e } });
+    }
+    if('starships' in args.inputs) {
+        data['starships'] = {};
+        data['starships']['set'] = args.inputs['starships'].map((e:number) => { return { id: e } });
+    }
+    if('vehicles' in args.inputs) {
+        data['vehicles'] = {};
+        data['vehicles']['set'] = args.inputs['vehicles'].map((e:number) => { return { id: e } });
+    }
+    if('characters' in args.inputs) {
+        data['characters'] = {};
+        data['characters']['set'] = args.inputs['characters'].map((e:number) => { return { id: e } });
+    }
+    if('planets' in args.inputs) {
+        data['planets'] = {};
+        data['planets']['set'] = args.inputs['planets'].map((e:number) => { return { id: e } });
+    }
+
+    const film = await prisma.film.create({data});
+    return film;
+}
+
+export async function editFilm(parent, args, context, info) {
+    const id = args.id;
+    const data:any = {}
+    if('title' in args.inputs) data['title'] = args.inputs['title']
+    if('episodeId' in args.inputs) data['episodeId'] = args.inputs['episodeId']
+    if('openingCrawl' in args.inputs) data['openingCrawl'] = args.inputs['openingCrawl']
+    if('director' in args.inputs) data['director'] = args.inputs['director']
+    if('producer' in args.inputs) data['producer'] = args.inputs['producer']
+    if('releaseDate' in args.inputs) data['releaseDate'] = args.inputs['releaseDate']
+    if('species' in args.inputs) {
+        data['species'] = {};
+        data['species']['set'] = args.inputs['species'].map((e:number) => { return { id: e } });
+    }
+    if('starships' in args.inputs) {
+        data['starships'] = {};
+        data['starships']['set'] = args.inputs['starships'].map((e:number) => { return { id: e } });
+    }
+    if('vehicles' in args.inputs) {
+        data['vehicles'] = {};
+        data['vehicles']['set'] = args.inputs['vehicles'].map((e:number) => { return { id: e } });
+    }
+    if('characters' in args.inputs) {
+        data['characters'] = {};
+        data['characters']['set'] = args.inputs['characters'].map((e:number) => { return { id: e } });
+    }
+    if('planets' in args.inputs) {
+        data['planets'] = {};
+        data['planets']['set'] = args.inputs['planets'].map((e:number) => { return { id: e } });
+    }
+    const film = await prisma.film.update({where: {id}, data});
+    return film;
+}
+
+export async function deleteFilm(parent, args, context, info) {
+    const id = args.id;
+    await prisma.film.delete({where: {id}});
+    return true;
+}

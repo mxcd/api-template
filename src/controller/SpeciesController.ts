@@ -95,3 +95,67 @@ export async function getPeopleForSpecies(parent, args, context, info) {
     }
 }
 
+
+export async function createSpecies(parent, args, context, info) {
+    const data:any = {}
+    if('name' in args.inputs) data['name'] = args.inputs['name']
+    if('classification' in args.inputs) data['classification'] = args.inputs['classification']
+    if('designation' in args.inputs) data['designation'] = args.inputs['designation']
+    if('averageHeight' in args.inputs) data['averageHeight'] = args.inputs['averageHeight']
+    if('averageLifespan' in args.inputs) data['averageLifespan'] = args.inputs['averageLifespan']
+    if('hairColors' in args.inputs) data['hairColors'] = args.inputs['hairColors']
+    if('skinColors' in args.inputs) data['skinColors'] = args.inputs['skinColors']
+    if('eyeColors' in args.inputs) data['eyeColors'] = args.inputs['eyeColors']
+    if('language' in args.inputs) data['language'] = args.inputs['language']
+    if('homeworldId' in args.inputs) data['homeworldId'] = args.inputs['homeworldId']
+    if('homeworld' in args.inputs) {
+        data['homeworld'] = {};
+        data['homeworld']['set'] = { id: args.inputs['homeworld'] };
+    }
+    if('films' in args.inputs) {
+        data['films'] = {};
+        data['films']['set'] = args.inputs['films'].map((e:number) => { return { id: e } });
+    }
+    if('people' in args.inputs) {
+        data['people'] = {};
+        data['people']['set'] = args.inputs['people'].map((e:number) => { return { id: e } });
+    }
+
+    const species = await prisma.species.create({data});
+    return species;
+}
+
+export async function editSpecies(parent, args, context, info) {
+    const id = args.id;
+    const data:any = {}
+    if('name' in args.inputs) data['name'] = args.inputs['name']
+    if('classification' in args.inputs) data['classification'] = args.inputs['classification']
+    if('designation' in args.inputs) data['designation'] = args.inputs['designation']
+    if('averageHeight' in args.inputs) data['averageHeight'] = args.inputs['averageHeight']
+    if('averageLifespan' in args.inputs) data['averageLifespan'] = args.inputs['averageLifespan']
+    if('hairColors' in args.inputs) data['hairColors'] = args.inputs['hairColors']
+    if('skinColors' in args.inputs) data['skinColors'] = args.inputs['skinColors']
+    if('eyeColors' in args.inputs) data['eyeColors'] = args.inputs['eyeColors']
+    if('language' in args.inputs) data['language'] = args.inputs['language']
+    if('homeworldId' in args.inputs) data['homeworldId'] = args.inputs['homeworldId']
+    if('homeworld' in args.inputs) {
+        data['homeworld'] = {};
+        data['homeworld']['set'] = { id: args.inputs['homeworld'] };
+    }
+    if('films' in args.inputs) {
+        data['films'] = {};
+        data['films']['set'] = args.inputs['films'].map((e:number) => { return { id: e } });
+    }
+    if('people' in args.inputs) {
+        data['people'] = {};
+        data['people']['set'] = args.inputs['people'].map((e:number) => { return { id: e } });
+    }
+    const species = await prisma.species.update({where: {id}, data});
+    return species;
+}
+
+export async function deleteSpecies(parent, args, context, info) {
+    const id = args.id;
+    await prisma.species.delete({where: {id}});
+    return true;
+}
