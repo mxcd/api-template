@@ -21,6 +21,13 @@ function isModel(models, s) {
     return false;
 }
 
+function getModel(models, s) {
+    for(const model of models) {
+        if(model.name === s) return model
+    }
+    return null;
+}
+
 function getField(model, name) {
     for(const field of model.fields) {
         if(field.name === name) return field;
@@ -111,6 +118,9 @@ for(const model of models) {
         field.isArray = prismaType.endsWith("[]");
         field.dataType = prismaType.replace("?", "").replace("[", "").replace("]", "")
         field.isModel = isModel(models, field.dataType)
+        if(field.isModel) {
+            field.model = getModel(models, field.dataType)
+        }
         field.gqlType = `${field.isArray?'[':''}${field.dataType}${field.isArray?'!]':''}${field.isRequired?'!':''}`
         if(field.isModel) {
             model.relationFields.push(field)
@@ -119,7 +129,7 @@ for(const model of models) {
     model.pluralName = getPlural(model.name)
 }
 const typesTemplate = readFileSync(join(__dirname, 'types.ejs'), 'utf8');
-let types = ejs.render(typesTemplate, {models})
+let types = ejs.render(typesTemplate, {models, DEFAULT_QUERY_LIMIT})
 writeFileSync(join(schemaDir, `types.graphql`), types)
 
 
@@ -130,7 +140,7 @@ writeFileSync(join(schemaDir, `operations.graphql`), operations)
 
 // GraphQL inputs
 const inputsTemplate = readFileSync(join(__dirname, 'inputs.ejs'), 'utf8');
-let inputs = ejs.render(inputsTemplate, {models})
+let inputs = ejs.render(inputsTemplate, {models, DEFAULT_QUERY_LIMIT})
 writeFileSync(join(schemaDir, `inputs.graphql`), inputs)
 
 // Model Controller

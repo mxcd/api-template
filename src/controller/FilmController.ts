@@ -60,7 +60,46 @@ export async function getFilms(parent, args, context, info) {
 
 export async function getSpeciesForFilm(parent, args, context, info) {
     const id = parent.id;
-    const film = await prisma.film.findUnique({where: {id}, include: {species: true}})
+
+
+    const filter:any = args.filter;
+    const search:string = args.search;
+    const sort: any = args.sort;
+    let where: any = {};
+
+    if(filter) {
+        where['AND'] = [];
+        if(filter.name) where['AND'].push({name: {contains: filter.name}});
+        if(filter.classification) where['AND'].push({classification: {contains: filter.classification}});
+        if(filter.designation) where['AND'].push({designation: {contains: filter.designation}});
+    }
+
+    if(search) {
+        where['OR'] = [
+            {name: {contains: search}},
+            {classification: {contains: search}},
+            {designation: {contains: search}},
+        ]
+    }
+
+    const limit: number = parseInt(args.limit) || 100
+    const offset: number = parseInt(args.offset) || 0
+
+    let orderBy: any = [];
+    if(sort) {
+        for(const key in sort) {
+            let sort = {}
+            sort[key] = args.sort[key].toLowerCase();
+            orderBy.push(sort);
+        }
+    }
+
+    const film = await prisma.film.findUnique({
+        where: {id},
+        include: {
+            species: { take: limit, skip: offset, where, orderBy}
+    }});
+
     if(film !== null) {
         return film.species;
     }
@@ -71,7 +110,50 @@ export async function getSpeciesForFilm(parent, args, context, info) {
 
 export async function getStarshipsForFilm(parent, args, context, info) {
     const id = parent.id;
-    const film = await prisma.film.findUnique({where: {id}, include: {starships: true}})
+
+
+    const filter:any = args.filter;
+    const search:string = args.search;
+    const sort: any = args.sort;
+    let where: any = {};
+
+    if(filter) {
+        where['AND'] = [];
+        if(filter.name) where['AND'].push({name: {contains: filter.name}});
+        if(filter.model) where['AND'].push({model: {contains: filter.model}});
+        if(filter.starshipClass) where['AND'].push({starshipClass: {contains: filter.starshipClass}});
+        if(filter.manufacturer) where['AND'].push({manufacturer: {contains: filter.manufacturer}});
+        if(filter.crew) where['AND'].push({crew: {equals: filter.crew}});
+        if(filter.passengers) where['AND'].push({passengers: {equals: filter.passengers}});
+    }
+
+    if(search) {
+        where['OR'] = [
+            {name: {contains: search}},
+            {model: {contains: search}},
+            {starshipClass: {contains: search}},
+            {manufacturer: {contains: search}},
+        ]
+    }
+
+    const limit: number = parseInt(args.limit) || 100
+    const offset: number = parseInt(args.offset) || 0
+
+    let orderBy: any = [];
+    if(sort) {
+        for(const key in sort) {
+            let sort = {}
+            sort[key] = args.sort[key].toLowerCase();
+            orderBy.push(sort);
+        }
+    }
+
+    const film = await prisma.film.findUnique({
+        where: {id},
+        include: {
+            starships: { take: limit, skip: offset, where, orderBy}
+    }});
+
     if(film !== null) {
         return film.starships;
     }
@@ -82,7 +164,50 @@ export async function getStarshipsForFilm(parent, args, context, info) {
 
 export async function getVehiclesForFilm(parent, args, context, info) {
     const id = parent.id;
-    const film = await prisma.film.findUnique({where: {id}, include: {vehicles: true}})
+
+
+    const filter:any = args.filter;
+    const search:string = args.search;
+    const sort: any = args.sort;
+    let where: any = {};
+
+    if(filter) {
+        where['AND'] = [];
+        if(filter.name) where['AND'].push({name: {contains: filter.name}});
+        if(filter.model) where['AND'].push({model: {contains: filter.model}});
+        if(filter.vehicleClass) where['AND'].push({vehicleClass: {contains: filter.vehicleClass}});
+        if(filter.manufacturer) where['AND'].push({manufacturer: {contains: filter.manufacturer}});
+        if(filter.crew) where['AND'].push({crew: {equals: filter.crew}});
+        if(filter.passengers) where['AND'].push({passengers: {equals: filter.passengers}});
+    }
+
+    if(search) {
+        where['OR'] = [
+            {name: {contains: search}},
+            {model: {contains: search}},
+            {vehicleClass: {contains: search}},
+            {manufacturer: {contains: search}},
+        ]
+    }
+
+    const limit: number = parseInt(args.limit) || 100
+    const offset: number = parseInt(args.offset) || 0
+
+    let orderBy: any = [];
+    if(sort) {
+        for(const key in sort) {
+            let sort = {}
+            sort[key] = args.sort[key].toLowerCase();
+            orderBy.push(sort);
+        }
+    }
+
+    const film = await prisma.film.findUnique({
+        where: {id},
+        include: {
+            vehicles: { take: limit, skip: offset, where, orderBy}
+    }});
+
     if(film !== null) {
         return film.vehicles;
     }
@@ -93,7 +218,43 @@ export async function getVehiclesForFilm(parent, args, context, info) {
 
 export async function getCharactersForFilm(parent, args, context, info) {
     const id = parent.id;
-    const film = await prisma.film.findUnique({where: {id}, include: {characters: true}})
+
+
+    const filter:any = args.filter;
+    const search:string = args.search;
+    const sort: any = args.sort;
+    let where: any = {};
+
+    if(filter) {
+        where['AND'] = [];
+        if(filter.name) where['AND'].push({name: {contains: filter.name}});
+        if(filter.gender) where['AND'].push({gender: {equals: filter.gender}});
+    }
+
+    if(search) {
+        where['OR'] = [
+            {name: {contains: search}},
+        ]
+    }
+
+    const limit: number = parseInt(args.limit) || 100
+    const offset: number = parseInt(args.offset) || 0
+
+    let orderBy: any = [];
+    if(sort) {
+        for(const key in sort) {
+            let sort = {}
+            sort[key] = args.sort[key].toLowerCase();
+            orderBy.push(sort);
+        }
+    }
+
+    const film = await prisma.film.findUnique({
+        where: {id},
+        include: {
+            characters: { take: limit, skip: offset, where, orderBy}
+    }});
+
     if(film !== null) {
         return film.characters;
     }
@@ -104,7 +265,42 @@ export async function getCharactersForFilm(parent, args, context, info) {
 
 export async function getPlanetsForFilm(parent, args, context, info) {
     const id = parent.id;
-    const film = await prisma.film.findUnique({where: {id}, include: {planets: true}})
+
+
+    const filter:any = args.filter;
+    const search:string = args.search;
+    const sort: any = args.sort;
+    let where: any = {};
+
+    if(filter) {
+        where['AND'] = [];
+        if(filter.name) where['AND'].push({name: {contains: filter.name}});
+    }
+
+    if(search) {
+        where['OR'] = [
+            {name: {contains: search}},
+        ]
+    }
+
+    const limit: number = parseInt(args.limit) || 100
+    const offset: number = parseInt(args.offset) || 0
+
+    let orderBy: any = [];
+    if(sort) {
+        for(const key in sort) {
+            let sort = {}
+            sort[key] = args.sort[key].toLowerCase();
+            orderBy.push(sort);
+        }
+    }
+
+    const film = await prisma.film.findUnique({
+        where: {id},
+        include: {
+            planets: { take: limit, skip: offset, where, orderBy}
+    }});
+
     if(film !== null) {
         return film.planets;
     }

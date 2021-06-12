@@ -10,7 +10,11 @@ DESC
 <% for(const model of models) { %>
 type <%= model.name %> {
 <% for(const field of model.fields) { -%>
+    <%_ if(field.isModel && field.isArray) { -%>
+    <%= field.name %>(limit: Int! = <%= DEFAULT_QUERY_LIMIT %>, offset: Int! = 0<%= field.model.searchFields.length !== 0 ? `, search: String` : ''%><%= field.model.filterFields.length !== 0 ? `, filter: ${field.model.pluralName}FilterInput` : ''%><%= field.model.sortFields.length !== 0 ? `, sort: ${field.model.pluralName}SortInput` : ''%>): <%= field.gqlType %>
+    <%_ } else { -%>
     <%= field.name %>: <%= field.gqlType %>
+    <%_ } -%>
 <% } -%>
 }
 

@@ -64,16 +64,58 @@ export async function get<%= model.pluralName%>(parent, args, context, info) {
 <% for(const relationField of model.relationFields) { %>
 export async function get<%= relationField.name.charAt(0).toUpperCase() + relationField.name.slice(1) %>For<%= model.name %>(parent, args, context, info) {
     const id = parent.id;
+
+    <%_ if(relationField.isArray) { %>
+    const filter:any = args.filter;
+    const search:string = args.search;
+    const sort: any = args.sort;
+    let where: any = {};
+
+    if(filter) {
+        where['AND'] = [];
+        <%_ for(const filterField of relationField.model.filterFields) { -%>
+        if(filter.<%= filterField.name %>) where['AND'].push({<%= filterField.name %>: {<%= filterField.filterMode %>: filter.<%= filterField.name %>}});
+        <%_ } -%>
+    }
+
+    if(search) {
+        where['OR'] = [
+        <%_ for(const searchField of relationField.model.searchFields) { -%>
+            {<%= searchField.name %>: {<%= searchField.searchMode %>: search}},
+        <%_ } -%>
+        ]
+    }
+
+    const limit: number = parseInt(args.limit) || 100
+    const offset: number = parseInt(args.offset) || 0
+
+    let orderBy: any = [];
+    if(sort) {
+        for(const key in sort) {
+            let sort = {}
+            sort[key] = args.sort[key].toLowerCase();
+            orderBy.push(sort);
+        }
+    }
+
+    const <%= model.name.toLowerCase() %> = await prisma.<%= model.name.toLowerCase() %>.findUnique({
+        where: {id},
+        include: {
+            <%= relationField.name %>: { take: limit, skip: offset, where, orderBy}
+    }});
+    <%_ } else { -%>
     const <%= model.name.toLowerCase() %> = await prisma.<%= model.name.toLowerCase() %>.findUnique({where: {id}, include: {<%= relationField.name %>: true}})
+    <%_ } -%>
+
     if(<%= model.name.toLowerCase() %> !== null) {
         return <%= model.name.toLowerCase() %>.<%= relationField.name %>;
     }
     else {
-<% if(relationField.isArray) { -%>
+        <%_ if(relationField.isArray) { -%>
         return [];
-<% } else { -%>
+        <%_ } else { -%>
         return null;
-<% } -%>
+        <%_ } -%>
     }
 }
 <% } %>

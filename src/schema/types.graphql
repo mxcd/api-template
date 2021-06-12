@@ -25,8 +25,8 @@ type Starship {
     consumables: String!
     createdDate: DateTime!
     modifiedDate: DateTime!
-    films: [Film!]!
-    pilots: [Person!]!
+    films(limit: Int! = 100, offset: Int! = 0, search: String, filter: FilmsFilterInput, sort: FilmsSortInput): [Film!]!
+    pilots(limit: Int! = 100, offset: Int! = 0, search: String, filter: PeopleFilterInput, sort: PeopleSortInput): [Person!]!
 }
 
 
@@ -44,10 +44,10 @@ type Person {
     modifiedDate: DateTime!
     homeworldId: Int
     homeworld: Planet
-    films: [Film!]!
-    species: [Species!]!
-    starships: [Starship!]!
-    vehicles: [Vehicle!]!
+    films(limit: Int! = 100, offset: Int! = 0, search: String, filter: FilmsFilterInput, sort: FilmsSortInput): [Film!]!
+    species(limit: Int! = 100, offset: Int! = 0, search: String, filter: SpeciesesFilterInput, sort: SpeciesesSortInput): [Species!]!
+    starships(limit: Int! = 100, offset: Int! = 0, search: String, filter: StarshipsFilterInput, sort: StarshipsSortInput): [Starship!]!
+    vehicles(limit: Int! = 100, offset: Int! = 0, search: String, filter: VehiclesFilterInput, sort: VehiclesSortInput): [Vehicle!]!
 }
 
 
@@ -61,11 +61,11 @@ type Film {
     releaseDate: String!
     createdDate: DateTime!
     modifiedDate: DateTime!
-    species: [Species!]!
-    starships: [Starship!]!
-    vehicles: [Vehicle!]!
-    characters: [Person!]!
-    planets: [Planet!]!
+    species(limit: Int! = 100, offset: Int! = 0, search: String, filter: SpeciesesFilterInput, sort: SpeciesesSortInput): [Species!]!
+    starships(limit: Int! = 100, offset: Int! = 0, search: String, filter: StarshipsFilterInput, sort: StarshipsSortInput): [Starship!]!
+    vehicles(limit: Int! = 100, offset: Int! = 0, search: String, filter: VehiclesFilterInput, sort: VehiclesSortInput): [Vehicle!]!
+    characters(limit: Int! = 100, offset: Int! = 0, search: String, filter: PeopleFilterInput, sort: PeopleSortInput): [Person!]!
+    planets(limit: Int! = 100, offset: Int! = 0, search: String, filter: PlanetsFilterInput, sort: PlanetsSortInput): [Planet!]!
 }
 
 
@@ -84,8 +84,8 @@ type Vehicle {
     consumables: String!
     createdDate: DateTime!
     modifiedDate: DateTime!
-    films: [Film!]!
-    pilots: [Person!]!
+    films(limit: Int! = 100, offset: Int! = 0, search: String, filter: FilmsFilterInput, sort: FilmsSortInput): [Film!]!
+    pilots(limit: Int! = 100, offset: Int! = 0, search: String, filter: PeopleFilterInput, sort: PeopleSortInput): [Person!]!
 }
 
 
@@ -104,8 +104,8 @@ type Species {
     modifiedDate: DateTime!
     homeworldId: Int
     homeworld: Planet
-    films: [Film!]!
-    people: [Person!]!
+    films(limit: Int! = 100, offset: Int! = 0, search: String, filter: FilmsFilterInput, sort: FilmsSortInput): [Film!]!
+    people(limit: Int! = 100, offset: Int! = 0, search: String, filter: PeopleFilterInput, sort: PeopleSortInput): [Person!]!
 }
 
 
@@ -122,9 +122,9 @@ type Planet {
     surfaceWater: Float
     createdDate: DateTime!
     modifiedDate: DateTime!
-    films: [Film!]!
-    species: [Species!]!
-    residents: [Person!]!
+    films(limit: Int! = 100, offset: Int! = 0, search: String, filter: FilmsFilterInput, sort: FilmsSortInput): [Film!]!
+    species(limit: Int! = 100, offset: Int! = 0, search: String, filter: SpeciesesFilterInput, sort: SpeciesesSortInput): [Species!]!
+    residents(limit: Int! = 100, offset: Int! = 0, search: String, filter: PeopleFilterInput, sort: PeopleSortInput): [Person!]!
 }
 
 

@@ -61,7 +61,9 @@ export async function getPeople(parent, args, context, info) {
 
 export async function getHomeworldForPerson(parent, args, context, info) {
     const id = parent.id;
+
     const person = await prisma.person.findUnique({where: {id}, include: {homeworld: true}})
+
     if(person !== null) {
         return person.homeworld;
     }
@@ -72,7 +74,42 @@ export async function getHomeworldForPerson(parent, args, context, info) {
 
 export async function getFilmsForPerson(parent, args, context, info) {
     const id = parent.id;
-    const person = await prisma.person.findUnique({where: {id}, include: {films: true}})
+
+
+    const filter:any = args.filter;
+    const search:string = args.search;
+    const sort: any = args.sort;
+    let where: any = {};
+
+    if(filter) {
+        where['AND'] = [];
+        if(filter.title) where['AND'].push({title: {contains: filter.title}});
+    }
+
+    if(search) {
+        where['OR'] = [
+            {title: {contains: search}},
+        ]
+    }
+
+    const limit: number = parseInt(args.limit) || 100
+    const offset: number = parseInt(args.offset) || 0
+
+    let orderBy: any = [];
+    if(sort) {
+        for(const key in sort) {
+            let sort = {}
+            sort[key] = args.sort[key].toLowerCase();
+            orderBy.push(sort);
+        }
+    }
+
+    const person = await prisma.person.findUnique({
+        where: {id},
+        include: {
+            films: { take: limit, skip: offset, where, orderBy}
+    }});
+
     if(person !== null) {
         return person.films;
     }
@@ -83,7 +120,46 @@ export async function getFilmsForPerson(parent, args, context, info) {
 
 export async function getSpeciesForPerson(parent, args, context, info) {
     const id = parent.id;
-    const person = await prisma.person.findUnique({where: {id}, include: {species: true}})
+
+
+    const filter:any = args.filter;
+    const search:string = args.search;
+    const sort: any = args.sort;
+    let where: any = {};
+
+    if(filter) {
+        where['AND'] = [];
+        if(filter.name) where['AND'].push({name: {contains: filter.name}});
+        if(filter.classification) where['AND'].push({classification: {contains: filter.classification}});
+        if(filter.designation) where['AND'].push({designation: {contains: filter.designation}});
+    }
+
+    if(search) {
+        where['OR'] = [
+            {name: {contains: search}},
+            {classification: {contains: search}},
+            {designation: {contains: search}},
+        ]
+    }
+
+    const limit: number = parseInt(args.limit) || 100
+    const offset: number = parseInt(args.offset) || 0
+
+    let orderBy: any = [];
+    if(sort) {
+        for(const key in sort) {
+            let sort = {}
+            sort[key] = args.sort[key].toLowerCase();
+            orderBy.push(sort);
+        }
+    }
+
+    const person = await prisma.person.findUnique({
+        where: {id},
+        include: {
+            species: { take: limit, skip: offset, where, orderBy}
+    }});
+
     if(person !== null) {
         return person.species;
     }
@@ -94,7 +170,50 @@ export async function getSpeciesForPerson(parent, args, context, info) {
 
 export async function getStarshipsForPerson(parent, args, context, info) {
     const id = parent.id;
-    const person = await prisma.person.findUnique({where: {id}, include: {starships: true}})
+
+
+    const filter:any = args.filter;
+    const search:string = args.search;
+    const sort: any = args.sort;
+    let where: any = {};
+
+    if(filter) {
+        where['AND'] = [];
+        if(filter.name) where['AND'].push({name: {contains: filter.name}});
+        if(filter.model) where['AND'].push({model: {contains: filter.model}});
+        if(filter.starshipClass) where['AND'].push({starshipClass: {contains: filter.starshipClass}});
+        if(filter.manufacturer) where['AND'].push({manufacturer: {contains: filter.manufacturer}});
+        if(filter.crew) where['AND'].push({crew: {equals: filter.crew}});
+        if(filter.passengers) where['AND'].push({passengers: {equals: filter.passengers}});
+    }
+
+    if(search) {
+        where['OR'] = [
+            {name: {contains: search}},
+            {model: {contains: search}},
+            {starshipClass: {contains: search}},
+            {manufacturer: {contains: search}},
+        ]
+    }
+
+    const limit: number = parseInt(args.limit) || 100
+    const offset: number = parseInt(args.offset) || 0
+
+    let orderBy: any = [];
+    if(sort) {
+        for(const key in sort) {
+            let sort = {}
+            sort[key] = args.sort[key].toLowerCase();
+            orderBy.push(sort);
+        }
+    }
+
+    const person = await prisma.person.findUnique({
+        where: {id},
+        include: {
+            starships: { take: limit, skip: offset, where, orderBy}
+    }});
+
     if(person !== null) {
         return person.starships;
     }
@@ -105,7 +224,50 @@ export async function getStarshipsForPerson(parent, args, context, info) {
 
 export async function getVehiclesForPerson(parent, args, context, info) {
     const id = parent.id;
-    const person = await prisma.person.findUnique({where: {id}, include: {vehicles: true}})
+
+
+    const filter:any = args.filter;
+    const search:string = args.search;
+    const sort: any = args.sort;
+    let where: any = {};
+
+    if(filter) {
+        where['AND'] = [];
+        if(filter.name) where['AND'].push({name: {contains: filter.name}});
+        if(filter.model) where['AND'].push({model: {contains: filter.model}});
+        if(filter.vehicleClass) where['AND'].push({vehicleClass: {contains: filter.vehicleClass}});
+        if(filter.manufacturer) where['AND'].push({manufacturer: {contains: filter.manufacturer}});
+        if(filter.crew) where['AND'].push({crew: {equals: filter.crew}});
+        if(filter.passengers) where['AND'].push({passengers: {equals: filter.passengers}});
+    }
+
+    if(search) {
+        where['OR'] = [
+            {name: {contains: search}},
+            {model: {contains: search}},
+            {vehicleClass: {contains: search}},
+            {manufacturer: {contains: search}},
+        ]
+    }
+
+    const limit: number = parseInt(args.limit) || 100
+    const offset: number = parseInt(args.offset) || 0
+
+    let orderBy: any = [];
+    if(sort) {
+        for(const key in sort) {
+            let sort = {}
+            sort[key] = args.sort[key].toLowerCase();
+            orderBy.push(sort);
+        }
+    }
+
+    const person = await prisma.person.findUnique({
+        where: {id},
+        include: {
+            vehicles: { take: limit, skip: offset, where, orderBy}
+    }});
+
     if(person !== null) {
         return person.vehicles;
     }

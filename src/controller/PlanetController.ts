@@ -60,7 +60,42 @@ export async function getPlanets(parent, args, context, info) {
 
 export async function getFilmsForPlanet(parent, args, context, info) {
     const id = parent.id;
-    const planet = await prisma.planet.findUnique({where: {id}, include: {films: true}})
+
+
+    const filter:any = args.filter;
+    const search:string = args.search;
+    const sort: any = args.sort;
+    let where: any = {};
+
+    if(filter) {
+        where['AND'] = [];
+        if(filter.title) where['AND'].push({title: {contains: filter.title}});
+    }
+
+    if(search) {
+        where['OR'] = [
+            {title: {contains: search}},
+        ]
+    }
+
+    const limit: number = parseInt(args.limit) || 100
+    const offset: number = parseInt(args.offset) || 0
+
+    let orderBy: any = [];
+    if(sort) {
+        for(const key in sort) {
+            let sort = {}
+            sort[key] = args.sort[key].toLowerCase();
+            orderBy.push(sort);
+        }
+    }
+
+    const planet = await prisma.planet.findUnique({
+        where: {id},
+        include: {
+            films: { take: limit, skip: offset, where, orderBy}
+    }});
+
     if(planet !== null) {
         return planet.films;
     }
@@ -71,7 +106,46 @@ export async function getFilmsForPlanet(parent, args, context, info) {
 
 export async function getSpeciesForPlanet(parent, args, context, info) {
     const id = parent.id;
-    const planet = await prisma.planet.findUnique({where: {id}, include: {species: true}})
+
+
+    const filter:any = args.filter;
+    const search:string = args.search;
+    const sort: any = args.sort;
+    let where: any = {};
+
+    if(filter) {
+        where['AND'] = [];
+        if(filter.name) where['AND'].push({name: {contains: filter.name}});
+        if(filter.classification) where['AND'].push({classification: {contains: filter.classification}});
+        if(filter.designation) where['AND'].push({designation: {contains: filter.designation}});
+    }
+
+    if(search) {
+        where['OR'] = [
+            {name: {contains: search}},
+            {classification: {contains: search}},
+            {designation: {contains: search}},
+        ]
+    }
+
+    const limit: number = parseInt(args.limit) || 100
+    const offset: number = parseInt(args.offset) || 0
+
+    let orderBy: any = [];
+    if(sort) {
+        for(const key in sort) {
+            let sort = {}
+            sort[key] = args.sort[key].toLowerCase();
+            orderBy.push(sort);
+        }
+    }
+
+    const planet = await prisma.planet.findUnique({
+        where: {id},
+        include: {
+            species: { take: limit, skip: offset, where, orderBy}
+    }});
+
     if(planet !== null) {
         return planet.species;
     }
@@ -82,7 +156,43 @@ export async function getSpeciesForPlanet(parent, args, context, info) {
 
 export async function getResidentsForPlanet(parent, args, context, info) {
     const id = parent.id;
-    const planet = await prisma.planet.findUnique({where: {id}, include: {residents: true}})
+
+
+    const filter:any = args.filter;
+    const search:string = args.search;
+    const sort: any = args.sort;
+    let where: any = {};
+
+    if(filter) {
+        where['AND'] = [];
+        if(filter.name) where['AND'].push({name: {contains: filter.name}});
+        if(filter.gender) where['AND'].push({gender: {equals: filter.gender}});
+    }
+
+    if(search) {
+        where['OR'] = [
+            {name: {contains: search}},
+        ]
+    }
+
+    const limit: number = parseInt(args.limit) || 100
+    const offset: number = parseInt(args.offset) || 0
+
+    let orderBy: any = [];
+    if(sort) {
+        for(const key in sort) {
+            let sort = {}
+            sort[key] = args.sort[key].toLowerCase();
+            orderBy.push(sort);
+        }
+    }
+
+    const planet = await prisma.planet.findUnique({
+        where: {id},
+        include: {
+            residents: { take: limit, skip: offset, where, orderBy}
+    }});
+
     if(planet !== null) {
         return planet.residents;
     }
