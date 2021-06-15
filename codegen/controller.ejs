@@ -98,7 +98,7 @@ export async function get<%= relationField.upperCamelCaseName %>For<%= model.upp
         }
     }
 
-    const <%= model.lowerCamelCaseName %> = await prisma.<%= model.upperCamelCaseName %>.findUnique({
+    const <%= model.lowerCamelCaseName %> = await prisma.<%= model.lowerCamelCaseName %>.findUnique({
         where: {id},
         include: {
             <%= relationField.name %>: { take: limit, skip: offset, where, orderBy}
@@ -141,7 +141,7 @@ export async function create<%= model.upperCamelCaseName %>(parent, args, contex
             <%_ } -%>
         <%_ } -%>
     <%_ } -%>
-<!--    TODO add support for "createdBy" and "modifiedBy" -->
+<%# TODO add support for "createdBy" and "modifiedBy" #%>
 
     const <%= model.lowerCamelCaseName %> = await prisma.<%= model.lowerCamelCaseName %>.create({data});
     return <%= model.lowerCamelCaseName %>;
@@ -169,7 +169,7 @@ export async function edit<%= model.upperCamelCaseName %>(parent, args, context,
             <%_ } -%>
         <%_ } -%>
     <%_ } -%>
-<!--    TODO add support for "createdBy" and "modifiedBy" -->
+<%# TODO add support for "createdBy" and "modifiedBy" #%>
     const <%= model.lowerCamelCaseName %> = await prisma.<%= model.lowerCamelCaseName %>.update({where: {id}, data});
     return <%= model.lowerCamelCaseName %>;
 }

@@ -16,7 +16,7 @@ input <%= model.upperCamelCasePluralName%>SortInput {
 
 input <%= model.upperCamelCaseName %>EditInput {
     <%_ for(const field of model.fields) { -%>
-        <%_ if(field.name !== 'createdDate' && field.name !== 'modifiedDate' && field.name !== 'id') { -%>
+        <%_ if(field.name !== 'createdDate' && field.name !== 'modifiedDate' && field.name !== 'createdBy' && field.name !== 'modifiedBy' && field.name !== 'id') { -%>
             <%_ if(field.isModel) { -%>
                 <%_ if(field.isArray) { -%>
     <%= field.name %>: [Int!]
@@ -32,7 +32,7 @@ input <%= model.upperCamelCaseName %>EditInput {
 
 input <%= model.upperCamelCaseName %>CreateInput {
 <%_ for(const field of model.fields) { -%>
-    <%_ if(field.name !== 'createdDate' && field.name !== 'modifiedDate' && field.name !== 'id') { -%>
+    <%_ if(field.name !== 'createdDate' && field.name !== 'modifiedDate' && field.name !== 'createdBy' && field.name !== 'modifiedBy' && field.name !== 'id') { -%>
         <%_ if(field.isModel) { -%>
             <%_ if(field.isArray) { -%>
     <%= field.name %>: [Int!]

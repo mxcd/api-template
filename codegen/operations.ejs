@@ -10,11 +10,11 @@ type Query {
     """
     Delivers a single <%= model.upperCamelCaseName %> by id
     """
-    <%= model.lowerCamelCaseName %>(id: Int!): <%= model.upperCamelCaseName %>
+    <%= model.lowerCamelCaseName %>(id: <%= model.idType %>!): <%= model.upperCamelCaseName %>
 
     create<%= model.upperCamelCaseName %>(inputs: <%= model.upperCamelCaseName %>CreateInput): <%= model.upperCamelCaseName %>!
-    edit<%= model.upperCamelCaseName %>(id: Int!, inputs: <%= model.upperCamelCaseName %>EditInput): <%= model.upperCamelCaseName %>!
-    delete<%= model.upperCamelCaseName %>(id: Int!): Boolean!
+    edit<%= model.upperCamelCaseName %>(id: <%= model.idType %>!, inputs: <%= model.upperCamelCaseName %>EditInput): <%= model.upperCamelCaseName %>!
+    delete<%= model.upperCamelCaseName %>(id: <%= model.idType %>!): Boolean!
 
 <% } %>
 }

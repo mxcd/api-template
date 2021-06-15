@@ -16,14 +16,14 @@ function getPlural(s) {
 
 function isModel(models, s) {
     for(const model of models) {
-        if(model.name === s) return true
+        if(model.upperCamelCaseName === s || model.lowerCamelCaseName === s || model.upperCamelCasePluralName === s || model.lowerCamelCasePluralName === s) return true
     }
     return false;
 }
 
 function getModel(models, s) {
     for(const model of models) {
-        if(model.name === s) return model
+        if(model.upperCamelCaseName === s || model.lowerCamelCaseName === s || model.upperCamelCasePluralName === s || model.lowerCamelCasePluralName === s) return model
     }
     return null;
 }
@@ -84,18 +84,6 @@ do {
                 field.lowerCamelCaseName = field.name;
                 field.upperCamelCaseName = field.lowerCamelCaseName.charAt(0).toUpperCase() + field.lowerCamelCaseName.slice(1)
 
-                const prismaType = field.type;
-                field.isRequired = !prismaType.endsWith("?");
-                field.isArray = prismaType.endsWith("[]");
-                field.dataType = prismaType.replace("?", "").replace("[", "").replace("]", "")
-                field.isModel = isModel(models, field.dataType)
-                if(field.isModel) {
-                    field.model = getModel(models, field.dataType)
-                }
-                field.gqlType = `${field.isArray?'[':''}${field.dataType}${field.isArray?'!]':''}${field.isRequired?'!':''}`
-                if(field.isModel) {
-                    model.relationFields.push(field)
-                }
                 model.fields.push(field)
             }
         } while(fieldMatch)
@@ -124,6 +112,26 @@ do {
         models.push(model)
     }
 } while(modelMatch);
+
+for(const model of models) {
+    for(let field of model.fields) {
+        const prismaType = field.type;
+        field.isRequired = !prismaType.endsWith("?");
+        field.isArray = prismaType.endsWith("[]");
+        field.dataType = prismaType.replace("?", "").replace("[", "").replace("]", "")
+        field.isModel = isModel(models, field.dataType)
+        if(field.isModel) {
+            field.model = getModel(models, field.dataType)
+        }
+        field.gqlType = `${field.isArray?'[':''}${field.dataType}${field.isArray?'!]':''}${field.isRequired?'!':''}`
+        if(field.isModel) {
+            model.relationFields.push(field)
+        }
+        if(field.name === "id") {
+            model.idType = field.dataType;
+        }
+    }
+}
 
 if(!existsSync(outputDir)) mkdirSync(outputDir)
 const schemaDir = join(outputDir, "schema")
