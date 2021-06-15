@@ -1,20 +1,20 @@
 <% for(const model of models) { %>
 <% if(model.filterFields.length !== 0) { -%>
-input <%= model.pluralName%>FilterInput {
+input <%= model.upperCamelCasePluralName%>FilterInput {
 <% for(const field of model.filterFields) { -%>
     <%= field.name %>: <%= field.dataType %>
 <% } -%>
 }
 <% } -%>
 <% if(model.sortFields.length !== 0) { -%>
-input <%= model.pluralName%>SortInput {
+input <%= model.upperCamelCasePluralName%>SortInput {
 <% for(const field of model.sortFields) { -%>
     <%= field.name %>: SortDirection
 <% } -%>
 }
 <% } -%>
 
-input <%= model.name %>EditInput {
+input <%= model.upperCamelCaseName %>EditInput {
     <%_ for(const field of model.fields) { -%>
         <%_ if(field.name !== 'createdDate' && field.name !== 'modifiedDate' && field.name !== 'id') { -%>
             <%_ if(field.isModel) { -%>
@@ -30,7 +30,7 @@ input <%= model.name %>EditInput {
     <%_ } -%>
 }
 
-input <%= model.name %>CreateInput {
+input <%= model.upperCamelCaseName %>CreateInput {
 <%_ for(const field of model.fields) { -%>
     <%_ if(field.name !== 'createdDate' && field.name !== 'modifiedDate' && field.name !== 'id') { -%>
         <%_ if(field.isModel) { -%>

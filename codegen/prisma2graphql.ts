@@ -65,7 +65,10 @@ let modelMatch;
 do {
     modelMatch = MODEL_REGEX.exec(prismaSchema)
     if(modelMatch) {
-        let model:any = {name: modelMatch[1], fields: [], searchFields: [], filterFields: [], sortFields: [], relationFields: []}
+        let model:any = {upperCamelCaseName: modelMatch[1], fields: [], searchFields: [], filterFields: [], sortFields: [], relationFields: []}
+        model.upperCamelCasePluralName = getPlural(model.upperCamelCaseName)
+        model.lowerCamelCasePluralName = model.upperCamelCasePluralName.charAt(0).toLowerCase() + model.upperCamelCasePluralName.slice(1)
+        model.lowerCamelCaseName = model.upperCamelCaseName.charAt(0).toLowerCase() + model.upperCamelCaseName.slice(1)
 
         console.log(`parsing model '${modelMatch[1]}'`)
         let fieldMatch;
@@ -73,10 +76,27 @@ do {
             fieldMatch = FIELD_REGEX.exec(modelMatch[2])
             if(fieldMatch) {
                 console.log(`\t => ${fieldMatch[1]}`)
-                model.fields.push({
+                let field:any = {
                     name: fieldMatch[1],
                     type: fieldMatch[2]
-                })
+                }
+
+                field.lowerCamelCaseName = field.name;
+                field.upperCamelCaseName = field.lowerCamelCaseName.charAt(0).toUpperCase() + field.lowerCamelCaseName.slice(1)
+
+                const prismaType = field.type;
+                field.isRequired = !prismaType.endsWith("?");
+                field.isArray = prismaType.endsWith("[]");
+                field.dataType = prismaType.replace("?", "").replace("[", "").replace("]", "")
+                field.isModel = isModel(models, field.dataType)
+                if(field.isModel) {
+                    field.model = getModel(models, field.dataType)
+                }
+                field.gqlType = `${field.isArray?'[':''}${field.dataType}${field.isArray?'!]':''}${field.isRequired?'!':''}`
+                if(field.isModel) {
+                    model.relationFields.push(field)
+                }
+                model.fields.push(field)
             }
         } while(fieldMatch)
 
@@ -111,23 +131,6 @@ if(!existsSync(schemaDir)) mkdirSync(schemaDir)
 
 
 // GraphQL types
-for(const model of models) {
-    for(const field of model.fields) {
-        const prismaType = field.type;
-        field.isRequired = !prismaType.endsWith("?");
-        field.isArray = prismaType.endsWith("[]");
-        field.dataType = prismaType.replace("?", "").replace("[", "").replace("]", "")
-        field.isModel = isModel(models, field.dataType)
-        if(field.isModel) {
-            field.model = getModel(models, field.dataType)
-        }
-        field.gqlType = `${field.isArray?'[':''}${field.dataType}${field.isArray?'!]':''}${field.isRequired?'!':''}`
-        if(field.isModel) {
-            model.relationFields.push(field)
-        }
-    }
-    model.pluralName = getPlural(model.name)
-}
 const typesTemplate = readFileSync(join(__dirname, 'types.ejs'), 'utf8');
 let types = ejs.render(typesTemplate, {models, DEFAULT_QUERY_LIMIT})
 writeFileSync(join(schemaDir, `types.graphql`), types)
@@ -149,7 +152,7 @@ if(!existsSync(controllerDir)) mkdirSync(controllerDir)
 const controllerTemplate = readFileSync(join(__dirname, 'controller.ejs'), 'utf8');
 for(const model of models) {
     let controller = ejs.render(controllerTemplate, {model})
-    writeFileSync(join(controllerDir, `${model.name}Controller.ts`), controller)
+    writeFileSync(join(controllerDir, `${model.upperCamelCaseName}Controller.ts`), controller)
 }
 
 // Resolvers file

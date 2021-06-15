@@ -1,16 +1,16 @@
 import {prisma} from "../util";
 import {ApolloError} from "apollo-server-errors";
 
-export async function get<%= model.name %>(parent, args, context, info) {
+export async function get<%= model.upperCamelCaseName %>(parent, args, context, info) {
     const id = args.id;
-    const <%= model.name.toLowerCase() %> = await prisma.<%= model.name.toLowerCase() %>.findUnique({where: {id}});
-    if(!<%= model.name.toLowerCase() %>) {
-        throw new ApolloError(`No <%= model.name.toLowerCase() %> with ID '${id}' found`, "NOT_FOUND")
+    const <%= model.lowerCamelCaseName %> = await prisma.<%= model.lowerCamelCaseName %>.findUnique({where: {id}});
+    if(!<%= model.lowerCamelCaseName %>) {
+        throw new ApolloError(`No <%= model.upperCamelCaseName %> with ID '${id}' found`, "NOT_FOUND")
     }
-    return <%= model.name.toLowerCase() %>;
+    return <%= model.lowerCamelCaseName %>;
 }
 
-export async function get<%= model.pluralName%>(parent, args, context, info) {
+export async function get<%= model.upperCamelCasePluralName%>(parent, args, context, info) {
     const filter:any = args.filter;
     const search:string = args.search;
     const sort: any = args.sort;
@@ -44,8 +44,8 @@ export async function get<%= model.pluralName%>(parent, args, context, info) {
     }
 
     const results = await prisma.$transaction([
-        prisma.<%= model.name.toLowerCase() %>.count({where}),
-        prisma.<%= model.name.toLowerCase() %>.findMany({
+        prisma.<%= model.lowerCamelCaseName %>.count({where}),
+        prisma.<%= model.lowerCamelCaseName %>.findMany({
             where,
             orderBy,
             take: limit,
@@ -53,16 +53,16 @@ export async function get<%= model.pluralName%>(parent, args, context, info) {
         })
     ])
     const total = results[0];
-    const <%= model.pluralName.toLowerCase() %> = results[1];
+    const <%= model.lowerCamelCasePluralName %> = results[1];
 
     return {
         total,
-        <%= model.pluralName.toLowerCase() %>
+        <%= model.lowerCamelCasePluralName %>
     };
 }
 
 <% for(const relationField of model.relationFields) { %>
-export async function get<%= relationField.name.charAt(0).toUpperCase() + relationField.name.slice(1) %>For<%= model.name %>(parent, args, context, info) {
+export async function get<%= relationField.upperCamelCaseName %>For<%= model.upperCamelCaseName %>(parent, args, context, info) {
     const id = parent.id;
 
     <%_ if(relationField.isArray) { %>
@@ -98,17 +98,17 @@ export async function get<%= relationField.name.charAt(0).toUpperCase() + relati
         }
     }
 
-    const <%= model.name.toLowerCase() %> = await prisma.<%= model.name.toLowerCase() %>.findUnique({
+    const <%= model.lowerCamelCaseName %> = await prisma.<%= model.upperCamelCaseName %>.findUnique({
         where: {id},
         include: {
             <%= relationField.name %>: { take: limit, skip: offset, where, orderBy}
     }});
     <%_ } else { -%>
-    const <%= model.name.toLowerCase() %> = await prisma.<%= model.name.toLowerCase() %>.findUnique({where: {id}, include: {<%= relationField.name %>: true}})
+    const <%= model.lowerCamelCaseName %> = await prisma.<%= model.lowerCamelCaseName %>.findUnique({where: {id}, include: {<%= relationField.name %>: true}})
     <%_ } -%>
 
-    if(<%= model.name.toLowerCase() %> !== null) {
-        return <%= model.name.toLowerCase() %>.<%= relationField.name %>;
+    if(<%= model.lowerCamelCaseName %> !== null) {
+        return <%= model.lowerCamelCaseName %>.<%= relationField.name %>;
     }
     else {
         <%_ if(relationField.isArray) { -%>
@@ -120,7 +120,7 @@ export async function get<%= relationField.name.charAt(0).toUpperCase() + relati
 }
 <% } %>
 
-export async function create<%= model.name %>(parent, args, context, info) {
+export async function create<%= model.upperCamelCaseName %>(parent, args, context, info) {
     const data:any = {}
     <%_ for(const field of model.fields) { -%>
         <%_ if(field.name !== 'createdDate' && field.name !== 'modifiedDate' && field.name !== 'id') { -%>
@@ -141,12 +141,13 @@ export async function create<%= model.name %>(parent, args, context, info) {
             <%_ } -%>
         <%_ } -%>
     <%_ } -%>
+<!--    TODO add support for "createdBy" and "modifiedBy" -->
 
-    const <%= model.name.toLowerCase() %> = await prisma.<%= model.name.toLowerCase() %>.create({data});
-    return <%= model.name.toLowerCase() %>;
+    const <%= model.lowerCamelCaseName %> = await prisma.<%= model.lowerCamelCaseName %>.create({data});
+    return <%= model.lowerCamelCaseName %>;
 }
 
-export async function edit<%= model.name %>(parent, args, context, info) {
+export async function edit<%= model.upperCamelCaseName %>(parent, args, context, info) {
     const id = args.id;
     const data:any = {}
     <%_ for(const field of model.fields) { -%>
@@ -168,12 +169,13 @@ export async function edit<%= model.name %>(parent, args, context, info) {
             <%_ } -%>
         <%_ } -%>
     <%_ } -%>
-    const <%= model.name.toLowerCase() %> = await prisma.<%= model.name.toLowerCase() %>.update({where: {id}, data});
-    return <%= model.name.toLowerCase() %>;
+<!--    TODO add support for "createdBy" and "modifiedBy" -->
+    const <%= model.lowerCamelCaseName %> = await prisma.<%= model.lowerCamelCaseName %>.update({where: {id}, data});
+    return <%= model.lowerCamelCaseName %>;
 }
 
-export async function delete<%= model.name %>(parent, args, context, info) {
+export async function delete<%= model.upperCamelCaseName %>(parent, args, context, info) {
     const id = args.id;
-    await prisma.<%= model.name.toLowerCase() %>.delete({where: {id}});
+    await prisma.<%= model.lowerCamelCaseName %>.delete({where: {id}});
     return true;
 }
