@@ -7,7 +7,8 @@ const DEFAULT_QUERY_LIMIT = 100;
 
 function getPlural(s) {
     if(pluralize.singular(s) === pluralize.plural(s)) {
-        return `${s}es`
+        if(s.endsWith('s')) return `${s}es`
+        else return `${s}s`
     }
     else {
         return pluralize.plural(s);
