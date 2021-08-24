@@ -6,7 +6,7 @@ import {get<%= model.upperCamelCaseName %>, get<%= model.upperCamelCasePluralNam
 const resolvers: IResolvers = {
     Query: {
 <% for(const model of models) { -%>
-        <%= model.upperCamelCaseName %>(parent, args, context, info) {
+        <%= model.lowerCamelCaseName %>(parent, args, context, info) {
             return get<%= model.upperCamelCaseName %>(parent, args, context, info);
         },
         <%= model.lowerCamelCasePluralName %>(parent, args, context, info) {
