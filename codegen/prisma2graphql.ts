@@ -4,6 +4,13 @@ const pluralize = require("pluralize")
 let ejs = require('ejs');
 
 const DEFAULT_QUERY_LIMIT = 100;
+const DEFAULT_AUTH_BLOCK = true;
+const SUPPORTED_METHODS = [
+    {name: "create", regex: /@create\((.*?)\)/gm},
+    {name: "read", regex: /@read\((.*?)\)/gm},
+    {name: "update", regex: /@update\((.*?)\)/gm},
+    {name: "delete", regex: /@delete\((.*?)\)/gm}
+]
 
 function getPlural(s) {
     if(pluralize.singular(s) === pluralize.plural(s)) {
@@ -59,6 +66,7 @@ const prismaSchema = readFileSync(prismaSchemaFile, 'utf8');
 const MODEL_REGEX = /model\s+?(.+?)\s*?{([\s\S]*?)}/gm
 const FIELD_REGEX = /^\s*?(\w+?)\s+(\S+)/gm
 const FIELD_ANNOTATION_REGEX = /(\/\/.*\s)(?:^\s*(\w+))/gm
+const MODEL_ANNOTATION_REGEX = /(\/\/.*\s)(?:^\s*model\s*(\w+))/gm
 
 let models: any = []
 
@@ -66,7 +74,11 @@ let modelMatch;
 do {
     modelMatch = MODEL_REGEX.exec(prismaSchema)
     if(modelMatch) {
-        let model:any = {upperCamelCaseName: modelMatch[1], fields: [], searchFields: [], filterFields: [], sortFields: [], relationFields: []}
+        let model:any = {upperCamelCaseName: modelMatch[1], fields: [], searchFields: [], filterFields: [], sortFields: [], relationFields: [], methods: {}}
+        model.methods.create = {auth: DEFAULT_AUTH_BLOCK, groups: []}
+        model.methods.read = {auth: DEFAULT_AUTH_BLOCK, groups: []}
+        model.methods.update = {auth: DEFAULT_AUTH_BLOCK, groups: []}
+        model.methods.delete = {auth: DEFAULT_AUTH_BLOCK, groups: []}
         model.upperCamelCasePluralName = getPlural(model.upperCamelCaseName)
         model.lowerCamelCasePluralName = model.upperCamelCasePluralName.charAt(0).toLowerCase() + model.upperCamelCasePluralName.slice(1)
         model.lowerCamelCaseName = model.upperCamelCaseName.charAt(0).toLowerCase() + model.upperCamelCaseName.slice(1)
@@ -113,6 +125,26 @@ do {
         models.push(model)
     }
 } while(modelMatch);
+
+let annotationMatch;
+do {
+    annotationMatch = MODEL_ANNOTATION_REGEX.exec(prismaSchema)
+    if(annotationMatch) {
+        const model = getModel(models, annotationMatch[2])
+        for(const method of SUPPORTED_METHODS) {
+            if(annotationMatch[1].indexOf(`@${method.name}`) !== -1) {
+                method.regex.lastIndex = 0;
+                const modelMethodMatch = method.regex.exec(annotationMatch[1]);
+                if(modelMethodMatch) {
+                    const methodParameter = JSON.parse(modelMethodMatch[1])
+                    if(typeof(methodParameter) !== 'undefined') {
+                        Object.assign(model.methods[method.name], methodParameter)
+                    }
+                }
+            }
+        }
+    }
+} while(annotationMatch)
 
 for(const model of models) {
     for(let field of model.fields) {
