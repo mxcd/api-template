@@ -220,7 +220,8 @@ export async function edit<%= model.upperCamelCaseName %>(parent, args, context,
         <%_ } -%>
     <%_ } -%>
     data['modifiedBy'] = typeof(context.user) !== 'undefined' && typeof(context.user.username) !== 'undefined' ? context.user.username : 'undefined'
-
+    data['modifiedDate'] = new Date();
+    
     const <%= model.lowerCamelCaseName %> = await prisma.<%= model.lowerCamelCaseName %>.update({where: {id}, data});
     return <%= model.lowerCamelCaseName %>;
 }
