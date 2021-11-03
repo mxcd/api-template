@@ -12,8 +12,8 @@ type Query {
     """
     <%= model.lowerCamelCaseName %>(id: <%= model.idType %>!): <%= model.upperCamelCaseName %>
 
-    create<%= model.upperCamelCaseName %>(inputs: <%= model.upperCamelCaseName %>CreateInput): <%= model.upperCamelCaseName %>!
-    edit<%= model.upperCamelCaseName %>(id: <%= model.idType %>!, inputs: <%= model.upperCamelCaseName %>EditInput): <%= model.upperCamelCaseName %>!
+    create<%= model.upperCamelCaseName %>(inputs: <%= model.upperCamelCaseName %>CreateInput!): <%= model.upperCamelCaseName %>!
+    edit<%= model.upperCamelCaseName %>(id: <%= model.idType %>!, inputs: <%= model.upperCamelCaseName %>EditInput!): <%= model.upperCamelCaseName %>!
     delete<%= model.upperCamelCaseName %>(id: <%= model.idType %>!): Boolean!
 
 <% } %>
