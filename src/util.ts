@@ -59,7 +59,7 @@ export const contextBuilder = async ({ req }): Promise<ContextType> => {
     return context;
 }
 
-export function authedUserInGroups(context, groups) {
+export function authedUserInGroups(context, groups, ownerUuid) {
     if(typeof(context.user) === 'undefined' || context.user === null ||
         typeof(context.user.groups) === 'undefined' || context.user.groups === null || context.auth === false) {
         return false;
@@ -68,6 +68,12 @@ export function authedUserInGroups(context, groups) {
     for(let groupKey of groups) {
         for(let userGroup of context.user.groups) {
             if(groupKey === userGroup.key) {
+                return true;
+            }
+        }
+        // if the resource is "owned" by the user, return true
+        if(groupKey === 'self' && typeof(ownerUuid) === 'string') {
+            if(ownerUuid === context.user.id) {
                 return true;
             }
         }
