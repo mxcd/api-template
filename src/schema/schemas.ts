@@ -1,5 +1,6 @@
 import 'graphql-import-node';
 import resolvers from '../controller/resolvers';
+import addCustomResolvers from '../controller/custom-resolvers';
 import {buildSubgraphSchema} from "@apollo/federation";
 import * as fs from "fs";
 const { mergeTypeDefs } = require('@graphql-tools/merge');
@@ -12,6 +13,7 @@ const operations = gql(fs.readFileSync(path.join(__dirname, 'operations.graphql'
 
 let typeDefs = mergeTypeDefs([types, inputs, operations]);
 
+addCustomResolvers(resolvers)
 //@ts-ignore
 const schema = buildSubgraphSchema([{ typeDefs, resolvers }]);
 export default schema;
