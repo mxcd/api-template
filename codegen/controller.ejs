@@ -4,21 +4,21 @@ import {prisma, authBlock, authedUserInGroups} from "../util";
 import {ApolloError, ForbiddenError} from "apollo-server-errors";
 
 export async function get<%= model.upperCamelCaseName %>(parent, args, context, info) {
-    const id = args.id;
+const id = args.id;
 <% if(model.methods.read.auth) { -%>
     authBlock(context);
 <% } -%>
 <% if(model.methods.read.groups.length !== 0) { -%>
     const authorizedGroups = [<%- model.methods.read.groups.map(e => `'${e}'`).join(",") %>];
     if(!authedUserInGroups(context, authorizedGroups, id)) {
-        throw new ForbiddenError(`User is not authorized to perform this action. Authorized groups are ${authorizedGroups}`)
+    throw new ForbiddenError(`User is not authorized to perform this action. Authorized groups are ${authorizedGroups}`)
     }
 <% } -%>
-    const <%= model.lowerCamelCaseName %> = await prisma.<%= model.lowerCamelCaseName %>.findUnique({where: {id}});
-    if(!<%= model.lowerCamelCaseName %>) {
-        throw new ApolloError(`No <%= model.upperCamelCaseName %> with ID '${id}' found`, "NOT_FOUND")
-    }
-    return <%= model.lowerCamelCaseName %>;
+const <%= model.lowerCamelCaseName %> = await prisma.<%= model.lowerCamelCaseName %>.findUnique({where: {id}});
+if(!<%= model.lowerCamelCaseName %>) {
+throw new ApolloError(`No <%= model.upperCamelCaseName %> with ID '${id}' found`, "NOT_FOUND")
+}
+return <%= model.lowerCamelCaseName %>;
 }
 
 export async function get<%= model.upperCamelCasePluralName%>(parent, args, context, info) {
@@ -28,70 +28,70 @@ export async function get<%= model.upperCamelCasePluralName%>(parent, args, cont
 <% if(model.methods.read.groups.length !== 0) { -%>
     const authorizedGroups = [<%- model.methods.read.groups.map(e => `'${e}'`).join(",") %>];
     if(!authedUserInGroups(context, authorizedGroups)) {
-        return {total: 0, <%= model.lowerCamelCasePluralName %>: []}
+    return {total: 0, <%= model.lowerCamelCasePluralName %>: []}
     }
 <% } -%>
-    const filter:any = args.filter;
-    const search:string = args.search;
-    const sort: any = args.sort;
-    let where: any = {};
+const filter:any = args.filter;
+const search:string = args.search;
+const sort: any = args.sort;
+let where: any = {};
 
-    if(filter) {
-        where['AND'] = [];
+if(filter) {
+where['AND'] = [];
 <% for(const filterField of model.filterFields) { -%>
-        if(filter.<%= filterField.name %>) where['AND'].push({<%= filterField.name %>: {<%= filterField.filterMode %>: filter.<%= filterField.name %>}});
+    if(filter.<%= filterField.name %>) where['AND'].push({<%= filterField.name %>: {<%= filterField.filterMode %>: filter.<%= filterField.name %>}});
 <% } -%>
-    }
+}
 
-    if(search) {
-        where['OR'] = [
+if(search) {
+where['OR'] = [
 <% for(const searchField of model.searchFields) { -%>
-            {<%= searchField.name %>: {<%= searchField.searchMode %>: search}},
+    {<%= searchField.name %>: {<%= searchField.searchMode %>: search}},
 <% } -%>
-        ]
-    }
+]
+}
 
-    const limit: number = parseInt(args.limit) || 100
-    const offset: number = parseInt(args.offset) || 0
+const limit: number = parseInt(args.limit) || 100
+const offset: number = parseInt(args.offset) || 0
 
-    let orderBy: any = [];
-    if(sort) {
-        for(const key in sort) {
-            let sort = {}
-            sort[key] = args.sort[key].toLowerCase();
-            orderBy.push(sort);
-        }
-    }
+let orderBy: any = [];
+if(sort) {
+for(const key in sort) {
+let sort = {}
+sort[key] = args.sort[key].toLowerCase();
+orderBy.push(sort);
+}
+}
 
-    const results = await prisma.$transaction([
-        prisma.<%= model.lowerCamelCaseName %>.count({where}),
-        prisma.<%= model.lowerCamelCaseName %>.findMany({
-            where,
-            orderBy,
-            take: limit,
-            skip: offset
-        })
-    ])
-    const total = results[0];
-    const <%= model.lowerCamelCasePluralName %> = results[1];
+const results = await prisma.$transaction([
+prisma.<%= model.lowerCamelCaseName %>.count({where}),
+prisma.<%= model.lowerCamelCaseName %>.findMany({
+where,
+orderBy,
+take: limit,
+skip: offset
+})
+])
+const total = results[0];
+const items = results[1];
 
-    return {
-        total,
-        <%= model.lowerCamelCasePluralName %>
-    };
+return {
+total,
+items
+};
 }
 
 <% for(const relationField of model.relationFields) { %>
-export async function get<%= relationField.upperCamelCaseName %>For<%= model.upperCamelCaseName %>(parent, args, context, info) {
+    export async function get<%= relationField.upperCamelCaseName %>For<%= model.upperCamelCaseName %>(parent, args, context, info) {
     <% if(model.methods.read.auth) { -%>
-    authBlock(context);
-<% } -%>
-<% if(model.methods.read.groups.length !== 0) { -%>
-    const authorizedGroups = [<%- model.methods.read.groups.map(e => `'${e}'`).join(",") %>];
-    if(!authedUserInGroups(context, authorizedGroups)) {
+        authBlock(context);
+    <% } -%>
+    <% if(model.methods.read.groups.length !== 0) { -%>
+        const authorizedGroups = [<%- model.methods.read.groups.map(e => `'${e}'`).join(",") %>];
+        if(!authedUserInGroups(context, authorizedGroups)) {
         return [];
-    }
-<% } -%>
+        }
+    <% } -%>
 
     const id = parent.id;
 
@@ -102,18 +102,18 @@ export async function get<%= relationField.upperCamelCaseName %>For<%= model.upp
     let where: any = {};
 
     if(filter) {
-        where['AND'] = [];
-        <%_ for(const filterField of relationField.model.filterFields) { -%>
+    where['AND'] = [];
+    <%_ for(const filterField of relationField.model.filterFields) { -%>
         if(filter.<%= filterField.name %>) where['AND'].push({<%= filterField.name %>: {<%= filterField.filterMode %>: filter.<%= filterField.name %>}});
-        <%_ } -%>
+    <%_ } -%>
     }
 
     if(search) {
-        where['OR'] = [
-        <%_ for(const searchField of relationField.model.searchFields) { -%>
-            {<%= searchField.name %>: {<%= searchField.searchMode %>: search}},
-        <%_ } -%>
-        ]
+    where['OR'] = [
+    <%_ for(const searchField of relationField.model.searchFields) { -%>
+        {<%= searchField.name %>: {<%= searchField.searchMode %>: search}},
+    <%_ } -%>
+    ]
     }
 
     const limit: number = parseInt(args.limit) || 100
@@ -121,33 +121,33 @@ export async function get<%= relationField.upperCamelCaseName %>For<%= model.upp
 
     let orderBy: any = [];
     if(sort) {
-        for(const key in sort) {
-            let sort = {}
-            sort[key] = args.sort[key].toLowerCase();
-            orderBy.push(sort);
-        }
+    for(const key in sort) {
+    let sort = {}
+    sort[key] = args.sort[key].toLowerCase();
+    orderBy.push(sort);
+    }
     }
 
     const <%= model.lowerCamelCaseName %> = await prisma.<%= model.lowerCamelCaseName %>.findUnique({
-        where: {id},
-        include: {
-            <%= relationField.name %>: { take: limit, skip: offset, where, orderBy}
+    where: {id},
+    include: {
+    <%= relationField.name %>: { take: limit, skip: offset, where, orderBy}
     }});
     <%_ } else { -%>
-    const <%= model.lowerCamelCaseName %> = await prisma.<%= model.lowerCamelCaseName %>.findUnique({where: {id}, include: {<%= relationField.name %>: true}})
+        const <%= model.lowerCamelCaseName %> = await prisma.<%= model.lowerCamelCaseName %>.findUnique({where: {id}, include: {<%= relationField.name %>: true}})
     <%_ } -%>
 
     if(<%= model.lowerCamelCaseName %> !== null) {
-        return <%= model.lowerCamelCaseName %>.<%= relationField.name %>;
+    return <%= model.lowerCamelCaseName %>.<%= relationField.name %>;
     }
     else {
-        <%_ if(relationField.isArray) { -%>
-        return [];
-        <%_ } else { -%>
-        return null;
-        <%_ } -%>
+    <%_ if(relationField.isArray) { -%>
+    return [];
+    <%_ } else { -%>
+    return null;
+    <%_ } -%>
     }
-}
+    }
 <% } %>
 
 export async function create<%= model.upperCamelCaseName %>(parent, args, context, info) {
@@ -157,73 +157,73 @@ export async function create<%= model.upperCamelCaseName %>(parent, args, contex
 <% if(model.methods.create.groups.length !== 0) { -%>
     const authorizedGroups = [<%- model.methods.create.groups.map(e => `'${e}'`).join(",") %>];
     if(!authedUserInGroups(context, authorizedGroups)) {
-        throw new ForbiddenError(`User is not authorized to perform this action. Authorized groups are ${authorizedGroups}`)
+    throw new ForbiddenError(`User is not authorized to perform this action. Authorized groups are ${authorizedGroups}`)
     }
 <% } -%>
 
-    const data:any = {}
-    <%_ for(const field of model.fields) { -%>
-        <%_ if(field.name !== 'createdDate' && field.name !== 'createdBy' && field.name !== 'modifiedDate' && field.name !== 'modifiedBy' && field.name !== 'id') { -%>
-            <%_ if(field.isModel) { -%>
-                <%_ if(field.isArray) { -%>
+const data:any = {}
+<%_ for(const field of model.fields) { -%>
+<%_ if(field.name !== 'createdDate' && field.name !== 'createdBy' && field.name !== 'modifiedDate' && field.name !== 'modifiedBy' && field.name !== 'id') { -%>
+<%_ if(field.isModel) { -%>
+<%_ if(field.isArray) { -%>
     if('<%= field.name %>' in args.inputs) {
-        data['<%= field.name %>'] = {};
-        data['<%= field.name %>']['connect'] = args.inputs['<%= field.name %>'].map((e:number) => { return { id: e } });
+    data['<%= field.name %>'] = {};
+    data['<%= field.name %>']['connect'] = args.inputs['<%= field.name %>'].map((e:number) => { return { id: e } });
     }
-                <%_ } else { -%>
+<%_ } else { -%>
     if('<%= field.name %>' in args.inputs) {
-        data['<%= field.name %>'] = {};
-        data['<%= field.name %>']['connect'] = { id: args.inputs['<%= field.name %>'] };
+    data['<%= field.name %>'] = {};
+    data['<%= field.name %>']['connect'] = { id: args.inputs['<%= field.name %>'] };
     }
-                <%_ } -%>
-            <%_ } else { -%>
+<%_ } -%>
+<%_ } else { -%>
     if('<%= field.name %>' in args.inputs) data['<%= field.name %>'] = args.inputs['<%= field.name %>']
-            <%_ } -%>
-        <%_ } -%>
-    <%_ } -%>
-    data['createdBy'] = typeof(context.user) !== 'undefined' && typeof(context.user.username) !== 'undefined' ? context.user.username : 'undefined'
-    data['modifiedBy'] = typeof(context.user) !== 'undefined' && typeof(context.user.username) !== 'undefined' ? context.user.username : 'undefined'
+<%_ } -%>
+<%_ } -%>
+<%_ } -%>
+data['createdBy'] = typeof(context.user) !== 'undefined' && typeof(context.user.username) !== 'undefined' ? context.user.username : 'undefined'
+data['modifiedBy'] = typeof(context.user) !== 'undefined' && typeof(context.user.username) !== 'undefined' ? context.user.username : 'undefined'
 
-    const <%= model.lowerCamelCaseName %> = await prisma.<%= model.lowerCamelCaseName %>.create({data});
-    return <%= model.lowerCamelCaseName %>;
+const <%= model.lowerCamelCaseName %> = await prisma.<%= model.lowerCamelCaseName %>.create({data});
+return <%= model.lowerCamelCaseName %>;
 }
 
 export async function edit<%= model.upperCamelCaseName %>(parent, args, context, info) {
-    const id = args.id;
+const id = args.id;
 <% if(model.methods.update.auth) { -%>
     authBlock(context);
 <% } -%>
 <% if(model.methods.update.groups.length !== 0) { -%>
     const authorizedGroups = [<%- model.methods.update.groups.map(e => `'${e}'`).join(",") %>];
     if(!authedUserInGroups(context, authorizedGroups, id)) {
-        throw new ForbiddenError(`User is not authorized to perform this action. Authorized groups are ${authorizedGroups}`)
+    throw new ForbiddenError(`User is not authorized to perform this action. Authorized groups are ${authorizedGroups}`)
     }
 <% } -%>
-    const data:any = {}
-    <%_ for(const field of model.fields) { -%>
-        <%_ if(field.name !== 'createdDate' && field.name !== 'createdBy' && field.name !== 'modifiedDate' && field.name !== 'modifiedBy' && field.name !== 'id') { -%>
-            <%_ if(field.isModel) { -%>
-                <%_ if(field.isArray) { -%>
+const data:any = {}
+<%_ for(const field of model.fields) { -%>
+<%_ if(field.name !== 'createdDate' && field.name !== 'createdBy' && field.name !== 'modifiedDate' && field.name !== 'modifiedBy' && field.name !== 'id') { -%>
+<%_ if(field.isModel) { -%>
+<%_ if(field.isArray) { -%>
     if('<%= field.name %>' in args.inputs) {
-        data['<%= field.name %>'] = {};
-        data['<%= field.name %>']['set'] = args.inputs['<%= field.name %>'].map((e:number) => { return { id: e } });
+    data['<%= field.name %>'] = {};
+    data['<%= field.name %>']['set'] = args.inputs['<%= field.name %>'].map((e:number) => { return { id: e } });
     }
-                <%_ } else { -%>
+<%_ } else { -%>
     if('<%= field.name %>' in args.inputs) {
-        data['<%= field.name %>'] = {};
-        data['<%= field.name %>']['set'] = { id: args.inputs['<%= field.name %>'] };
+    data['<%= field.name %>'] = {};
+    data['<%= field.name %>']['set'] = { id: args.inputs['<%= field.name %>'] };
     }
-                <%_ } -%>
-            <%_ } else { -%>
+<%_ } -%>
+<%_ } else { -%>
     if('<%= field.name %>' in args.inputs) data['<%= field.name %>'] = args.inputs['<%= field.name %>']
-            <%_ } -%>
-        <%_ } -%>
-    <%_ } -%>
-    data['modifiedBy'] = typeof(context.user) !== 'undefined' && typeof(context.user.username) !== 'undefined' ? context.user.username : 'undefined'
-    data['modifiedDate'] = new Date();
+<%_ } -%>
+<%_ } -%>
+<%_ } -%>
+data['modifiedBy'] = typeof(context.user) !== 'undefined' && typeof(context.user.username) !== 'undefined' ? context.user.username : 'undefined'
+data['modifiedDate'] = new Date();
 
-    const <%= model.lowerCamelCaseName %> = await prisma.<%= model.lowerCamelCaseName %>.update({where: {id}, data});
-    return <%= model.lowerCamelCaseName %>;
+const <%= model.lowerCamelCaseName %> = await prisma.<%= model.lowerCamelCaseName %>.update({where: {id}, data});
+return <%= model.lowerCamelCaseName %>;
 }
 
 export async function delete<%= model.upperCamelCaseName %>(parent, args, context, info) {
@@ -233,10 +233,10 @@ export async function delete<%= model.upperCamelCaseName %>(parent, args, contex
 <% if(model.methods.delete.groups.length !== 0) { -%>
     const authorizedGroups = [<%- model.methods.delete.groups.map(e => `'${e}'`).join(",") %>];
     if(!authedUserInGroups(context, authorizedGroups)) {
-        throw new ForbiddenError(`User is not authorized to perform this action. Authorized groups are ${authorizedGroups}`)
+    throw new ForbiddenError(`User is not authorized to perform this action. Authorized groups are ${authorizedGroups}`)
     }
 <% } -%>
-    const id = args.id;
-    await prisma.<%= model.lowerCamelCaseName %>.delete({where: {id}});
-    return true;
+const id = args.id;
+await prisma.<%= model.lowerCamelCaseName %>.delete({where: {id}});
+return true;
 }
