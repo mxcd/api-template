@@ -31,54 +31,71 @@ export async function get<%= model.upperCamelCasePluralName%>(parent, args, cont
     return {total: 0, <%= model.lowerCamelCasePluralName %>: []}
     }
 <% } -%>
-const filter:any = args.filter;
-const search:string = args.search;
-const sort: any = args.sort;
-let where: any = {};
+    const filter:any = args.filter;
+    const search:string = args.search;
+    const sort: any = args.sort;
+    let where: any = {};
 
-if(filter) {
-where['AND'] = [];
-<% for(const filterField of model.filterFields) { -%>
-    if(filter.<%= filterField.name %>) where['AND'].push({<%= filterField.name %>: {<%= filterField.filterMode %>: filter.<%= filterField.name %>}});
-<% } -%>
-}
+    if(filter) {
+        where['AND'] = [];
+    <%_ for(const filterField of model.filterFields) { -%>
+        if(filter.<%= filterField.name %>) {
+      <%_ if(filterField.dataType === "Int" || filterField.dataType === "Float") { -%>
+            if(typeof filter.<%= filterField.name %>.gte === 'undefined' && typeof filter.<%= filterField.name %>.lte === 'undefined') {
+                throw new ApolloError(`Invalid filter for <%= model.upperCamelCaseName %>.<%= filterField.name %>`, "INVALID_FILTER");
+            }
+            const filterFieldRelation = {};
+            if(typeof filter.<%= filterField.name %>.gte !== 'undefined') {
+                filterFieldRelation['gte'] = filter.<%= filterField.name %>.gte;
+            }
+            if(typeof filter.<%= filterField.name %>.lte !== 'undefined') {
+                filterFieldRelation['lte'] = filter.<%= filterField.name %>.lte;
+            }
+            where['AND'].push({<%= filterField.name %>: filterFieldRelation});
+      <%_ } else { -%>
+            where['AND'].push({<%= filterField.name %>: {<%= filterField.filterMode %>: filter.<%= filterField.name %>}});
+      <%_ } -%>
+        }
 
-if(search) {
-where['OR'] = [
+    <%_ } -%>
+    }
+
+    if(search) {
+        where['OR'] = [
 <% for(const searchField of model.searchFields) { -%>
-    {<%= searchField.name %>: {<%= searchField.searchMode %>: search}},
+          {<%= searchField.name %>: {<%= searchField.searchMode %>: search}},
 <% } -%>
-]
-}
+        ]
+    }
 
-const limit: number = parseInt(args.limit) || 100
-const offset: number = parseInt(args.offset) || 0
+    const limit: number = parseInt(args.limit) || 100
+    const offset: number = parseInt(args.offset) || 0
 
-let orderBy: any = [];
-if(sort) {
-for(const key in sort) {
-let sort = {}
-sort[key] = args.sort[key].toLowerCase();
-orderBy.push(sort);
-}
-}
+    let orderBy: any = [];
+    if(sort) {
+        for(const key in sort) {
+            let sort = {}
+            sort[key] = args.sort[key].toLowerCase();
+            orderBy.push(sort);
+        }
+    }
 
-const results = await prisma.$transaction([
-prisma.<%= model.lowerCamelCaseName %>.count({where}),
-prisma.<%= model.lowerCamelCaseName %>.findMany({
-where,
-orderBy,
-take: limit,
-skip: offset
-})
-])
-const total = results[0];
-const items = results[1];
+    const results = await prisma.$transaction([
+        prisma.<%= model.lowerCamelCaseName %>.count({where}),
+        prisma.<%= model.lowerCamelCaseName %>.findMany({
+            where,
+            orderBy,
+            take: limit,
+            skip: offset
+        })
+    ])
+    const total = results[0];
+    const items = results[1];
 
-return {
-total,
-items
-};
+    return {
+        total,
+        items
+    };
 }
 
 <% for(const relationField of model.relationFields) { %>
@@ -102,9 +119,26 @@ items
     let where: any = {};
 
     if(filter) {
-    where['AND'] = [];
-    <%_ for(const filterField of relationField.model.filterFields) { -%>
-        if(filter.<%= filterField.name %>) where['AND'].push({<%= filterField.name %>: {<%= filterField.filterMode %>: filter.<%= filterField.name %>}});
+        where['AND'] = [];
+    <%_ for(const filterField of model.filterFields) { -%>
+        if(filter.<%= filterField.name %>) {
+      <%_ if(filterField.dataType === "Int" || filterField.dataType === "Float") { -%>
+            if(typeof filter.<%= filterField.name %>.gte === 'undefined' && typeof filter.<%= filterField.name %>.lte === 'undefined') {
+                throw new ApolloError(`Invalid filter for <%= model.upperCamelCaseName %>.<%= filterField.name %>`, "INVALID_FILTER");
+            }
+            const filterFieldRelation = {};
+            if(typeof filter.<%= filterField.name %>.gte !== 'undefined') {
+                filterFieldRelation['gte'] = filter.<%= filterField.name %>.gte;
+            }
+            if(typeof filter.<%= filterField.name %>.lte !== 'undefined') {
+                filterFieldRelation['lte'] = filter.<%= filterField.name %>.lte;
+            }
+            where['AND'].push({<%= filterField.name %>: filterFieldRelation});
+      <%_ } else { -%>
+            where['AND'].push({<%= filterField.name %>: {<%= filterField.filterMode %>: filter.<%= filterField.name %>}});
+      <%_ } -%>
+        }
+
     <%_ } -%>
     }
 

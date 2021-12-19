@@ -2,8 +2,14 @@
 <% if(model.filterFields.length !== 0) { -%>
 input <%= model.upperCamelCasePluralName%>FilterInput {
 <% for(const field of model.filterFields) { -%>
+    <%_ if(field.dataType === "Int") { -%>
+    <%= field.name%>: IntRange
+    <%_ } else if(field.dataType === "Float") { -%>
+    <%= field.name%>: FloatRange
+    <%_ } else { -%>
     <%= field.name %>: <%= field.dataType %>
-<% } -%>
+    <%_ } -%>
+<%_ } -%>
 }
 <% } -%>
 <% if(model.sortFields.length !== 0) { -%>
@@ -46,3 +52,13 @@ input <%= model.upperCamelCaseName %>CreateInput {
 <%_ } -%>
 }
 <% } %>
+
+input IntRange {
+    gte: Int
+    lte: Int
+}
+
+input FloatRange {
+    gte: Float
+    lte: Float
+}

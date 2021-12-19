@@ -1,5 +1,6 @@
 import * as winston from "winston";
 import {PrismaClient} from "@prisma/client";
+import {AuthenticationError} from "apollo-server-errors";
 
 require('dotenv').config()
 
@@ -59,7 +60,13 @@ export const contextBuilder = async ({ req }): Promise<ContextType> => {
     return context;
 }
 
-export function authedUserInGroups(context, groups, ownerUuid) {
+export function authBlock(context) {
+    if (!context.auth) {
+        throw new AuthenticationError('request not authenticated');
+    }
+}
+
+export function authedUserInGroups(context, groups, ownerUuid?) {
     if(typeof(context.user) === 'undefined' || context.user === null ||
         typeof(context.user.groups) === 'undefined' || context.user.groups === null || context.auth === false) {
         return false;

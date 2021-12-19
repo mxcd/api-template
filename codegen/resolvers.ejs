@@ -1,4 +1,4 @@
-import { IResolvers } from 'graphql-tools';
+import { IResolvers } from '@graphql-tools/utils';
 <% for(const model of models) { -%>
 import {get<%= model.upperCamelCaseName %>, get<%= model.upperCamelCasePluralName %>, create<%= model.upperCamelCaseName %>, edit<%= model.upperCamelCaseName %>, delete<%= model.upperCamelCaseName %><% for(const relationField of model.relationFields) { %>, get<%= relationField.name.charAt(0).toUpperCase() + relationField.name.slice(1) %>For<%= model.upperCamelCaseName %><% } %>} from "./<%= model.upperCamelCaseName %>Controller";
 <% } -%>
